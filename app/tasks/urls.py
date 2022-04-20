@@ -1,6 +1,6 @@
 from rest_framework import routers
 
-from app.tasks.models import Category
+from tasks.models import Category
 from .views import CategoryViewSet
 
 router = routers.DefaultRouter()
