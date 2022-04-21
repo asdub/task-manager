@@ -13,7 +13,7 @@ import ColorBox from 'src/components/ColorBox';
 
 export default function Categories() {
   const { getResourceList, resourceList, deleteResource } = 
-    useRequestResource({ endpoint: "categories" });
+    useRequestResource({ endpoint: "categories", resourceLabel: "Category" });
   const [open, setOpen] = useState(false);
   const [idDelete, setIdDelete] = useState(null);
 

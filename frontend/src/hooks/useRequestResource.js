@@ -1,15 +1,17 @@
 import { useCallback, useState } from "react";
 import axios from "axios";
+import { useSnackbar } from "notistack";
 
 /* Get data from API */
 
 export default function useRequestResource({
-    endpoint }) {
+    endpoint, resourceLabel }) {
         const [resourceList, setResourceList] = 
         useState({
             results: []
         });
         const [resource, setResource] = useState(null);
+        const { enqueueSnackbar } = useSnackbar();
 
         const getResourceList = useCallback(() =>
         {
@@ -27,13 +29,14 @@ export default function useRequestResource({
             (values, successCallback) => {
                 axios.post(`/api/${endpoint}/`, values)
                     .then(() => {
+                        enqueueSnackbar(`${resourceLabel} added.`)
                         if (successCallback) {
                             successCallback();
                         }
                     }).catch((err) => {
                         console.error(err);
                     })
-            }, [endpoint])
+            }, [endpoint, enqueueSnackbar, resourceLabel])
 
         const getResource = useCallback((id) => {
             axios.get(`/api/${endpoint}/${id}/`)
@@ -48,17 +51,19 @@ export default function useRequestResource({
         const updateResource = useCallback((id, values, successCallback) => {
             axios.patch(`/api/${endpoint}/${id}/`, values)
                 .then(() => {
+                    enqueueSnackbar(`${resourceLabel} updated.`)
                     if (successCallback) {
                         successCallback();
                     }
                 }).catch((err) => {
                     console.error(err);
                 })
-        }, [endpoint])
+        }, [endpoint, enqueueSnackbar, resourceLabel])
 
         const deleteResource = useCallback((id) => {
             axios.delete(`/api/${endpoint}/${id}/`)
                 .then(() => {
+                    enqueueSnackbar(`${resourceLabel} deleted.`)
                     const newResourceList = {
                         results: resourceList.results.filter((r) => {
                             return r.id !== id
@@ -68,7 +73,7 @@ export default function useRequestResource({
                 }).catch((err) => {
                     console.error(err);
                 })
-        }, [endpoint, resourceList])
+        }, [endpoint, resourceList, enqueueSnackbar, resourceLabel])
 
         return {
             resourceList,

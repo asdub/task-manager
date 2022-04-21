@@ -10,8 +10,7 @@ export default function ColorPicker({onChange, value, error, helperText}) {
     const [displayColorPicker, setDisplayColorPicker] = useState(false);
 
     const handleClick = () => {
-        setDisplayColorPicker((prevState) =>
-        !prevState)
+        setDisplayColorPicker((prevState) => !prevState)
     }
 
     const handleClose = () => {
@@ -44,6 +43,7 @@ export default function ColorPicker({onChange, value, error, helperText}) {
             position: "absolute",
             zIndex: "2"
         }}>
+            {/* Overlay */}
             <Box sx={{
                 position: "fixed",
                 top: "0px",
@@ -52,9 +52,8 @@ export default function ColorPicker({onChange, value, error, helperText}) {
                 right: "0px"
             }}
             onClick={handleClose}
-            >
-                <BlockPicker color={value} onChange={handleChangeColor} />
-            </Box>
+            />
+            <BlockPicker color={value} onChange={handleChangeColor} />
         </Box> : null }
     </div>
   )
