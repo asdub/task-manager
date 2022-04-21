@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { CssBaseline, Box } from "@mui/material";
 import Categories from "./pages/Categories";
+import CategoryDetails from "./pages/Categories/CategoryDetails";
 
 export default function App() {
   return <div>
@@ -16,6 +17,8 @@ export default function App() {
       }}>
         <Routes>
           <Route path="/categories" element={<Categories />} />
+          <Route path="/categories/create" element={<CategoryDetails />} />
+          <Route path={`/categories/edit/:id`} element={<CategoryDetails />} />
         </Routes>
       </Box>
     </Router>
