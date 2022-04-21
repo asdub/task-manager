@@ -1,27 +1,39 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Link } from 'react-router-dom';
+import useRequestResource from 'src/hooks/useRequestResource';
 import { Button, Box, Paper, Table, 
   TableBody, TableCell, TableContainer,
   TableHead, TableRow, IconButton } from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
+import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from "@mui/icons-material/Delete" ;
 
-const test_data = [
-  {
-    id: 1,
-    name: "Feature",
-    colour: "cccccc"
-  },
-  {
-    id: 2,
-    name: "Bug",
-    colour: "eeeeee",
-  }
-]
 
 export default function Categories() {
+  const { getResourceList, resourceList } = 
+  useRequestResource({ endpoint:
+  "categories" });
+
+  useEffect(() => {
+    getResourceList();
+  }, [getResourceList])
+
   return (
     <div>
+      <Box sx={{ 
+        display: "flex",
+        justifyContent: "flex-end",
+        mt: 1,
+        mb: 2
+      }}>
+        <Button 
+          component={Link}
+          variant="outlined"
+          color="primary"
+          to="/categories/create"
+        >
+          Create Category
+        </Button>
+      </Box>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 360 }} size="small">
           <TableHead>
@@ -32,13 +44,13 @@ export default function Categories() {
                 <TableCell align="left">
                   Colour
                 </TableCell>
-                <TableCell align="left">
+                <TableCell align="right">
                   Actions
                 </TableCell>
               </TableRow>
           </TableHead>
           <TableBody>
-            {test_data.map((r) => {
+            {resourceList.results.map((r) => {
                 return <TableRow key={r.id}>
                   <TableCell align="left">
                     {r.name}
