@@ -2,6 +2,8 @@ import { useCallback, useState } from "react";
 import axios from "axios";
 import { useSnackbar } from "notistack";
 
+import formatHttpApiError from "src/helpers/formatHttpApiError";
+
 /* Get data from API */
 
 export default function useRequestResource({
@@ -11,7 +13,14 @@ export default function useRequestResource({
             results: []
         });
         const [resource, setResource] = useState(null);
+        const [error, setError] = useState(null);
         const { enqueueSnackbar } = useSnackbar();
+
+        const handleRequestResourceError = useCallback((err) => {
+            const formattedError = formatHttpApiError(err);
+            setError(formattedError);
+            enqueueSnackbar(formattedError);
+        }, [enqueueSnackbar, setError])
 
         const getResourceList = useCallback(() =>
         {
@@ -20,10 +29,8 @@ export default function useRequestResource({
                     setResourceList({
                         results:res.data
                     })
-                }).catch((err) => {
-                    console.error(err);
-                })
-        }, [endpoint])
+                }).catch(handleRequestResourceError)
+        }, [endpoint, handleRequestResourceError])
 
         const addResource = useCallback(
             (values, successCallback) => {
@@ -33,20 +40,16 @@ export default function useRequestResource({
                         if (successCallback) {
                             successCallback();
                         }
-                    }).catch((err) => {
-                        console.error(err);
-                    })
-            }, [endpoint, enqueueSnackbar, resourceLabel])
+                    }).catch(handleRequestResourceError)
+            }, [endpoint, enqueueSnackbar, resourceLabel, handleRequestResourceError])
 
         const getResource = useCallback((id) => {
             axios.get(`/api/${endpoint}/${id}/`)
                 .then((res) => {
                     const { data } = res;
                     setResource(data);
-                }).catch((err) => {
-                    console.error(err);
-                })
-        }, [endpoint])
+                }).catch(handleRequestResourceError)
+        }, [endpoint, handleRequestResourceError])
 
         const updateResource = useCallback((id, values, successCallback) => {
             axios.patch(`/api/${endpoint}/${id}/`, values)
@@ -55,10 +58,8 @@ export default function useRequestResource({
                     if (successCallback) {
                         successCallback();
                     }
-                }).catch((err) => {
-                    console.error(err);
-                })
-        }, [endpoint, enqueueSnackbar, resourceLabel])
+                }).catch(handleRequestResourceError)
+        }, [endpoint, enqueueSnackbar, resourceLabel, handleRequestResourceError])
 
         const deleteResource = useCallback((id) => {
             axios.delete(`/api/${endpoint}/${id}/`)
@@ -70,10 +71,8 @@ export default function useRequestResource({
                         })
                     }
                     setResourceList(newResourceList);
-                }).catch((err) => {
-                    console.error(err);
-                })
-        }, [endpoint, resourceList, enqueueSnackbar, resourceLabel])
+                }).catch(handleRequestResourceError)
+        }, [endpoint, resourceList, enqueueSnackbar, resourceLabel, handleRequestResourceError])
 
         return {
             resourceList,
@@ -82,6 +81,7 @@ export default function useRequestResource({
             resource,
             getResource,
             updateResource,
-            deleteResource
+            deleteResource,
+            error
         }
     }

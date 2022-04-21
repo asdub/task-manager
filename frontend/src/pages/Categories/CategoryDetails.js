@@ -7,8 +7,14 @@ import * as yup from "yup";
 import useRequestResource from 'src/hooks/useRequestResource';
 import ColorPicker from 'src/components/ColorPicker';
 
+const validationSchema = yup.object({
+    name: yup.string().required("Name is required").max(100, "Max length 100 characters"),
+    color: yup.string().required("Color is required")
+})
+
 export default function CategoryDetails() {
-    const { addResource, resource, getResource, updateResource } = useRequestResource({ endpoint: "categories", resourceLabel: "Category" })
+    const { addResource, resource, getResource, updateResource } = 
+        useRequestResource({ endpoint: "categories", resourceLabel: "Category" })
     const [ initialValues, setInitialValues ] = useState({
         name: "",
         color: ""
@@ -57,7 +63,11 @@ export default function CategoryDetails() {
         <Typography variant="h6" mb={2}>
             {id ? "Edit Category": "Create Category"}
         </Typography>
-        <Formik onSubmit={handleSubmit} initialValues={initialValues} enableReinitialize>
+        <Formik onSubmit={handleSubmit} 
+            initialValues={initialValues} 
+            enableReinitialize
+            validationSchema={validationSchema}
+        >
             {(formik) => {
                 return (
                     <form onSubmit={formik.handleSubmit}>
