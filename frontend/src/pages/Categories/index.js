@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import useRequestResource from 'src/hooks/useRequestResource';
 import { Button, Box, Paper, Table, 
   TableBody, TableCell, TableContainer,

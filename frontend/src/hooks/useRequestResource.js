@@ -1,5 +1,6 @@
 import { useCallback, useState, useContext } from "react";
 import axios from "axios";
+import getCommonOptions from "src/helpers/axios/getCommonOptions";
 import { useSnackbar } from "notistack";
 
 import formatHttpApiError from "src/helpers/formatHttpApiError";
@@ -28,7 +29,7 @@ export default function useRequestResource({
 
         const getResourceList = useCallback(() => {
             setLoading(true);
-            axios.get(`/api/${endpoint}/`)
+            axios.get(`/api/${endpoint}/`, getCommonOptions())
                 .then((res) => {
                     setLoading(false);
                     setResourceList({
@@ -40,7 +41,7 @@ export default function useRequestResource({
         const addResource = useCallback(
             (values, successCallback) => {
                 setLoading(true);
-                axios.post(`/api/${endpoint}/`, values)
+                axios.post(`/api/${endpoint}/`, values, getCommonOptions())
                     .then(() => {
                         setLoading(false);
                         enqueueSnackbar(`${resourceLabel} added.`)
@@ -53,7 +54,7 @@ export default function useRequestResource({
 
         const getResource = useCallback((id) => {
             setLoading(true);
-            axios.get(`/api/${endpoint}/${id}/`)
+            axios.get(`/api/${endpoint}/${id}/`, getCommonOptions())
                 .then((res) => {
                     setLoading(false);
                     const { data } = res;
@@ -63,7 +64,7 @@ export default function useRequestResource({
 
         const updateResource = useCallback((id, values, successCallback) => {
             setLoading(true);
-            axios.patch(`/api/${endpoint}/${id}/`, values)
+            axios.patch(`/api/${endpoint}/${id}/`, values, getCommonOptions())
                 .then(() => {
                     setLoading(false);
                     enqueueSnackbar(`${resourceLabel} updated.`)
@@ -76,7 +77,7 @@ export default function useRequestResource({
 
         const deleteResource = useCallback((id) => {
             setLoading(true);
-            axios.delete(`/api/${endpoint}/${id}/`)
+            axios.delete(`/api/${endpoint}/${id}/`, getCommonOptions())
                 .then(() => {
                     setLoading(false);
                     enqueueSnackbar(`${resourceLabel} deleted.`)
