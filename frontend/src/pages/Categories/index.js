@@ -1,24 +1,53 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Link } from 'react-router-dom';
 import useRequestResource from 'src/hooks/useRequestResource';
 import { Button, Box, Paper, Table, 
   TableBody, TableCell, TableContainer,
-  TableHead, TableRow, IconButton } from "@mui/material";
+  TableHead, TableRow, IconButton, Dialog, 
+  DialogTitle, DialogActions } from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from "@mui/icons-material/Delete" ;
 
 
 export default function Categories() {
-  const { getResourceList, resourceList } = 
-  useRequestResource({ endpoint:
-  "categories" });
+  const { getResourceList, resourceList, deleteResource } = 
+    useRequestResource({ endpoint: "categories" });
+  const [open, setOpen] = useState(false);
+  const [idDelete, setIdDelete] = useState(null);
 
   useEffect(() => {
     getResourceList();
   }, [getResourceList])
 
+  const handleConfirmDelete = (id) => {
+    setIdDelete(id);
+    setOpen(true);
+  }
+
+  const handleDeleteClose = () => {
+    setOpen(false);
+  }
+
+  const handleDelete = () => {
+    setOpen(false);
+    deleteResource(idDelete);
+  }
+
   return (
     <div>
+      <Dialog open={open} onClose={handleDeleteClose}>
+        <DialogTitle>
+           Do you wish to delete this category?
+        </DialogTitle>
+        <DialogActions>
+          <Button variant="outlined" onClick={handleDelete}>
+            Yes  
+          </Button>
+          <Button variant="contained" onClick={handleDeleteClose}>
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
       <Box sx={{ 
         display: "flex",
         justifyContent: "flex-end",
@@ -65,7 +94,10 @@ export default function Categories() {
                           <EditIcon />
                         </IconButton>
                       </Link>
-                      <IconButton size="large" onClick={null}>
+                      <IconButton size="large" 
+                        onClick={() => {
+                          handleConfirmDelete(r.id)
+                      }}>
                         <DeleteIcon />
                       </IconButton>
                     </Box>
