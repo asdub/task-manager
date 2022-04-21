@@ -5,13 +5,13 @@ import { Box, Grid, TextField, Typography, Paper, Button } from "@mui/material";
 import * as yup from "yup";
 
 import useRequestResource from 'src/hooks/useRequestResource';
-
+import ColorPicker from 'src/components/ColorPicker';
 
 export default function CategoryDetails() {
     const { addResource, resource, getResource, updateResource } = useRequestResource({ endpoint: "categories" })
     const [ initialValues, setInitialValues ] = useState({
         name: "",
-        colour: ""
+        color: ""
     });
 
     const navigate = useNavigate();
@@ -27,19 +27,23 @@ export default function CategoryDetails() {
         if (resource) {
             setInitialValues({
                 name: resource.name,
-                colour: resource.colour
+                color: `#${resource.color}`
             })
         }
     }, [resource])
 
     const handleSubmit = values => {
+        const formattedValues = {
+            name: values.name,
+            color: values.color.substring(1)
+        }
         if (id) {
-            updateResource(id, values, () => {
+            updateResource(id, formattedValues, () => {
                 navigate("/categories");
             })
             return;
         }
-        addResource(values, () => {
+        addResource(formattedValues, () => {
             navigate("/categories")
         })
     }
@@ -64,18 +68,19 @@ export default function CategoryDetails() {
                                     id="name"
                                     label="Name"
                                     {...formik.getFieldProps("name")}
-                                    error={formik.touched.name & Boolean(formik.errors.name)}
+                                    error={formik.touched.name && Boolean(formik.errors.name)}
                                     helperText={formik.touched.name && formik.errors.name}
                                 />
                             </Grid>
                             <Grid item xs={12}>
-                                <TextField
-                                    fullWidth
-                                    id="colour"
-                                    label="Colour"
-                                    {...formik.getFieldProps("colour")}
-                                    error={formik.touched.colour & Boolean(formik.errors.colour)}
-                                    helperText={formik.touched.colour && formik.errors.colour}
+                                <ColorPicker
+                                    id="color"
+                                    value={formik.values.color}
+                                    onChange={(color) => {
+                                        formik.setFieldValue("color", color.hex)
+                                    }}
+                                    error={formik.touched.color && Boolean(formik.errors.color)}
+                                    helperText={formik.touched.color && formik.errors.color}
                                 />
                             </Grid>
                             <Grid item>

@@ -8,6 +8,8 @@ import { Button, Box, Paper, Table,
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from "@mui/icons-material/Delete" ;
 
+import ColorBox from 'src/components/ColorBox';
+
 
 export default function Categories() {
   const { getResourceList, resourceList, deleteResource } = 
@@ -71,7 +73,7 @@ export default function Categories() {
                   Name
                 </TableCell>
                 <TableCell align="left">
-                  Colour
+                  color
                 </TableCell>
                 <TableCell align="right">
                   Actions
@@ -85,7 +87,7 @@ export default function Categories() {
                     {r.name}
                   </TableCell>
                   <TableCell align="left">
-                    {r.colour}
+                    <ColorBox color={`#${r.color}`} />
                   </TableCell>
                   <TableCell align="right">
                     <Box sx={{ display: "flex", justifyContent: "flex-end"}}>
