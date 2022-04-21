@@ -1,5 +1,5 @@
 import React, { useEffect, useState} from 'react'
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Formik } from "formik";
 import { Box, Grid, TextField, Typography, Paper, Button } from "@mui/material";
 import * as yup from "yup";
@@ -8,15 +8,37 @@ import useRequestResource from 'src/hooks/useRequestResource';
 
 
 export default function CategoryDetails() {
-    const { addResource } = useRequestResource({ endpoint: "categories" })
+    const { addResource, resource, getResource, updateResource } = useRequestResource({ endpoint: "categories" })
     const [ initialValues, setInitialValues ] = useState({
         name: "",
         colour: ""
     });
 
     const navigate = useNavigate();
+    const { id } = useParams();
+
+    useEffect(() => {
+        if (id) {
+            getResource(id);
+        }
+    }, [id, getResource]);
+
+    useEffect(() => {
+        if (resource) {
+            setInitialValues({
+                name: resource.name,
+                colour: resource.colour
+            })
+        }
+    }, [resource])
 
     const handleSubmit = values => {
+        if (id) {
+            updateResource(id, values, () => {
+                navigate("/categories");
+            })
+            return;
+        }
         addResource(values, () => {
             navigate("/categories")
         })
@@ -29,9 +51,9 @@ export default function CategoryDetails() {
         padding: (theme) => theme.spacing(2, 4, 3)
     }}>
         <Typography variant="h6" mb={2}>
-            Create Category
+            {id ? "Edit Category": "Create Category"}
         </Typography>
-        <Formik onSubmit={handleSubmit} initialValues={initialValues}>
+        <Formik onSubmit={handleSubmit} initialValues={initialValues} enableReinitialize>
             {(formik) => {
                 return (
                     <form onSubmit={formik.handleSubmit}>

@@ -11,8 +11,7 @@ export default function App() {
     <CssBaseline />
     <Router>
       <Box sx={{
-        bgcolor: (theme) => theme.
-        palette.background.default,
+        bgcolor: (theme) => theme.palette.background.default,
         minHeight: "100vh"
       }}>
         <Routes>

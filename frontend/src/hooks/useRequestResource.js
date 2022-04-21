@@ -9,6 +9,7 @@ export default function useRequestResource({
         useState({
             results: []
         });
+        const [resource, setResource] = useState(null);
 
         const getResourceList = useCallback(() =>
         {
@@ -34,9 +35,33 @@ export default function useRequestResource({
                     })
             }, [endpoint])
 
+        const getResource = useCallback((id) => {
+            axios.get(`/api/${endpoint}/${id}/`)
+                .then((res) => {
+                    const { data } = res;
+                    setResource(data);
+                }).catch((err) => {
+                    console.error(err);
+                })
+        }, [endpoint])
+
+        const updateResource = useCallback((id, values, successCallback) => {
+            axios.patch(`/api/${endpoint}/${id}/`, values)
+                .then(() => {
+                    if (successCallback) {
+                        successCallback();
+                    }
+                }).catch((err) => {
+                    console.error(err);
+                })
+        }, [endpoint])
+
         return {
             resourceList,
             getResourceList,
-            addResource
+            addResource,
+            resource,
+            getResource,
+            updateResource
         }
     }
