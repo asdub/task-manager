@@ -1,10 +1,10 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import { LoadingButton } from '@mui/lab';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -12,8 +12,9 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { Formik } from "formik";
 import * as yup from "yup";
+
 import useRequestAuth from 'src/hooks/useRequestAuth';
-import { useNavigate } from 'react-router-dom';
+
 
 const validationSchema = yup.object({
     username: yup.string().required("Username/ Email Address required."),
@@ -23,12 +24,9 @@ const validationSchema = yup.object({
 
 export default function SignIn() {
     const { login, loading } = useRequestAuth();
-    const navigate = useNavigate();
 
     const handleSubmit = (values) => {
-        login(values, () => {
-            navigate("/categories")
-        })
+        login(values)
     };
 
     return (
@@ -99,12 +97,12 @@ export default function SignIn() {
                                 </LoadingButton>
                                 <Grid container>
                                     <Grid item xs>
-                                        <Link href="#" variant="body2">
+                                        <Link to="/reset-password" key="reset-password">
                                             Forgot password?
                                         </Link>
                                     </Grid>
                                     <Grid item>
-                                        <Link href="#" variant="body2">
+                                        <Link to="/signup" key="signup">
                                             {"Don't have an account? Sign Up"}
                                         </Link>
                                     </Grid>

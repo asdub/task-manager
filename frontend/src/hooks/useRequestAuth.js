@@ -20,7 +20,7 @@ export default function useRequestAuth() {
         setLoading(false);
     }, [enqueueSnackbar, setLoading, setError])
 
-    const register = useCallback(({ username, email, password, successCallback }) => {
+    const register = useCallback(({username, email, password}, successCallback ) => {
         setLoading(true);
         axios.post("/api/auth/users/", {
             username, 
@@ -28,7 +28,7 @@ export default function useRequestAuth() {
             password
         })
             .then(() => {
-                enqueueSnackbar("Sign Up Successful.");
+                enqueueSnackbar("Sign Up Successful. Please Login.");
                 setLoading(false);
                 if (successCallback) {
                     successCallback();
@@ -36,7 +36,7 @@ export default function useRequestAuth() {
             }).catch(handleReuqestError)
     }, [enqueueSnackbar, handleReuqestError, setLoading])
 
-    const login = useCallback(({ username, password }, successCallback) => {
+    const login = useCallback(({ username, password }) => {
         setLoading(true);
         axios.post("/api/auth/token/login/", { username, password })
             .then((res) => {
@@ -44,9 +44,6 @@ export default function useRequestAuth() {
                 localStorage.setItem("authToken", auth_token);
                 setLoading(false)
                 setIsAuthenticated(true);
-                if (successCallback) {
-                    successCallback();
-                }
             }).catch(handleReuqestError)
     }, [handleReuqestError, setLoading, setIsAuthenticated])
 

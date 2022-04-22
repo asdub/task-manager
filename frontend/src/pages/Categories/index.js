@@ -53,7 +53,6 @@ export default function Categories() {
       <Box sx={{ 
         display: "flex",
         justifyContent: "flex-end",
-        mt: 1,
         mb: 2
       }}>
         <Button 

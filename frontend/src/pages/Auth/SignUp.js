@@ -1,8 +1,8 @@
 import * as React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import { LoadingButton } from '@mui/lab';
 import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -21,8 +21,12 @@ const validationSchema = yup.object({
 
 export default function SignUp() {
     const { register, loading } = useRequestAuth();
+    const navigate = useNavigate();
+
     const handleSubmit = (values) => {
-        register(values);
+        register(values, () => {
+            navigate("/signin")
+        })
     };
 
     return (
@@ -105,7 +109,7 @@ export default function SignUp() {
                                 </LoadingButton>
                                 <Grid container justifyContent="flex-end">
                                     <Grid item>
-                                        <Link href="#" variant="body2">
+                                        <Link to="/signin" key="signin">
                                             Already have an account? Sign in
                                         </Link>
                                     </Grid>
