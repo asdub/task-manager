@@ -9,12 +9,14 @@ import {
     Typography,
     TextField,
     Box,
-    Modal
+    Modal,
+    CircularProgress
 } from "@mui/material";
 import { AccountCircle } from "@mui/icons-material";
 import MenuIcon from "@mui/icons-material/Menu";
 
 import { AuthContext } from "src/context/AuthContextProvider"
+import useRequestAuth from "src/hooks/useRequestAuth";
 
 const drawerWidth = 240;
 
@@ -34,6 +36,11 @@ export function AppHeader({ mobileOpen, setMobileOpen }) {
     const open = Boolean(anchorEl);
     const [modalIsOpen, setModalIsOpen] = React.useState(false);
     const { user } = React.useContext(AuthContext);
+    const { logout, logoutPending } = useRequestAuth();
+
+    const handleLogout = () => {
+        logout();
+    }
 
     const handleOpenModal = () => {
         setModalIsOpen(true);
@@ -121,7 +128,16 @@ export function AppHeader({ mobileOpen, setMobileOpen }) {
                 onClose={handleClose}
             >
                 <MenuItem onClick={handleOpenModal}>Account Details</MenuItem>
-                <MenuItem onClick={() => { }}>Logout</MenuItem>
+                <MenuItem disabled={logoutPending} onClick={handleLogout}>
+                    <Box sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center"
+                    }}>
+                    {logoutPending === true ? <CircularProgress size={15} sx={{mr: 2}} /> : null}
+                    </Box>
+                    Logout
+                </MenuItem>
             </Menu>
         </Box>
     );
