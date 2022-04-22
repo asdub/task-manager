@@ -28,3 +28,6 @@ class CustomUser(AbstractUser):
     )
     email = models.EmailField(blank=False, unique=True)
     objects = CustomUserManager()
+
+    def __str__(self):
+        return self.username

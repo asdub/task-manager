@@ -8,7 +8,7 @@ from .models import Category, Task
 class StandardResultsSetPagination(PageNumberPagination):
     page_size = 6
     page_size_query_param = 'page_size'
-    max_page_size = 12
+    max_page_size = 6
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -27,11 +27,11 @@ class TaskViewSet(viewsets.ModelViewSet):
         permissions.IsAuthenticated
     ]
     serializer_class = TaskSerializer
-    pageination_class = StandardResultsSetPagination
+    pagination_class = StandardResultsSetPagination
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['title']
-    ordering_fields =['completed', 'due_by']
-    ordering = ['completed', 'due_by']
+    ordering_fields =['completed']
+    ordering = ['completed']
 
     def get_queryset(self):
         user = self.request.user
@@ -49,7 +49,7 @@ class TaskViewSet(viewsets.ModelViewSet):
         if category is not None:
             query_params["category"] = category
 
-        return Task.object.filter(created_by=user, **query_params)
+        return Task.objects.filter(created_by=user, **query_params)
 
     def perform_create(self, serializer):
         return serializer.save(created_by=self.request.user)
