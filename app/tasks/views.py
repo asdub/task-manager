@@ -3,6 +3,7 @@ from .serializers import CategorySerializer, TaskSerializer
 from rest_framework.pagination import PageNumberPagination
 
 from .models import Category, Task
+from .permissions import TaskPermission
 
 # Create your views here.
 class StandardResultsSetPagination(PageNumberPagination):
@@ -24,7 +25,8 @@ class CategoryViewSet(viewsets.ModelViewSet):
 
 class TaskViewSet(viewsets.ModelViewSet):
     permission_classes = [
-        permissions.IsAuthenticated
+        permissions.IsAuthenticated,
+        TaskPermission
     ]
     serializer_class = TaskSerializer
     pagination_class = StandardResultsSetPagination
