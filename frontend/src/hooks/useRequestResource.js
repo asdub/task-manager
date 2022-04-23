@@ -27,9 +27,9 @@ export default function useRequestResource({
             enqueueSnackbar(formattedError);
         }, [enqueueSnackbar, setError, setLoading])
 
-        const getResourceList = useCallback(() => {
+        const getResourceList = useCallback(({ query = ""} = {}) => {
             setLoading(true);
-            axios.get(`/api/${endpoint}/`, getCommonOptions())
+            axios.get(`/api/${endpoint}/${query}`, getCommonOptions())
                 .then((res) => {
                     setLoading(false);
                     if (res.data.results) {

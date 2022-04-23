@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from 'react'
-import { Box, Button, Dialog, DialogActions, DialogTitle } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Box, Button, Dialog, DialogActions, DialogTitle, 
+  Typography, Pagination } from "@mui/material";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import queryString from "query-string";
 
 import TaskListItem from "./TaskListItem";
 import useRequestResource from 'src/hooks/useRequestResource';
+const pageSize = 6;
 
 export default function Tasks() {
   const { resourceList, getResourceList, deleteResource, updateResource } = 
   useRequestResource({ endpoint: "tasks", resourceLabel: "Task" })
   const [open, setOpen] = useState(false);
   const [idToDelete, setIdToDelete] = useState(null);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const query = queryString.parse(location.search);
 
   const handleUpdateCompleted = (task) => {
     updateResource(task.id, {
@@ -31,9 +37,18 @@ export default function Tasks() {
     deleteResource(idToDelete);
   }
 
+  const handlePagePagination = (event, value) => {
+    const newQuery = {
+      ...query,
+      page:value
+    }
+    const newSearch = queryString.stringify(newQuery);
+    navigate(`${location.pathname}?${newSearch}`)
+  }
+
   useEffect(() => {
-    getResourceList();
-  }, [getResourceList])
+    getResourceList({ query: location.search });
+  }, [getResourceList, location.search])
 
   return (
     <div>
@@ -50,6 +65,15 @@ export default function Tasks() {
           </Button>
         </DialogActions>
       </Dialog>
+      <Typography
+        variant="subtitle1"
+        color="text.primary"
+        sx={{
+          marginLeft: (theme) => theme.spacing(1),
+          marginBottom: (theme)  => theme.spacing(2),
+        }}>
+          {`You have ${resourceList.count || 0} tasks`}
+        </Typography>
       <Box sx={{
         display: "flex",
         justifyContent: "flex-end",
@@ -77,6 +101,18 @@ export default function Tasks() {
           </div>
         )
       })}
+
+      <Box sx={{
+        display: "flex",
+        justifyContent: "flex-end"
+      }}>
+        <Pagination
+          color="primary"
+          count={Math.ceil(resourceList.count / pageSize)}
+          page={query.page ? parseInt(query.page) : 1}
+          onChange={handlePagePagination}
+        />
+      </Box>
     </div>
   )
 }

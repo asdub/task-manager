@@ -49,9 +49,6 @@ const validationSchema = yup.object({
     priority: yup.string().required("Priority is required"),
 });
 
-// TODO: Categories from API for dropdown
-const categories = [];
-
 export default function TaskDetails() {
     const { getResourceList, resourceList: categoryList } = 
     useRequestResource({ endpoint: "categories"});
