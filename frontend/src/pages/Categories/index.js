@@ -57,7 +57,7 @@ export default function Categories() {
       }}>
         <Button 
           component={Link}
-          variant="outlined"
+          variant="contained"
           color="primary"
           to="/categories/create"
         >

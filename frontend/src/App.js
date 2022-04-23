@@ -13,6 +13,7 @@ import RequireAuth from "./components/RequireAuth";
 import RequireNoAuth from "./components/RequireNoAuth";
 
 import Base from "./components/Base";
+import "./index.css";
 import Tasks from "./pages/Tasks";
 import TaskDetails from "./pages/Tasks/TaskDetails";
 import Dashboard from "./pages/Dashboard";

@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import PropTypes from "prop-types";
-import { ListItemIcon, styled, Checkbox, Card, CardHeader, CardContent, IconButton, Box, Menu, MenuItem } from "@mui/material";
+import { ListItemIcon, styled, Checkbox, Card, CardHeader, 
+    CardContent, IconButton, Box, Menu, MenuItem } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline"
 import { Link } from "react-router-dom";
+import ColorLabel from './ColorLabel';
+import priorityOptionsData from 'src/data/priorityOptionsData';
 
 const StyledLink = styled(Link)(({ theme }) => ({
     textDecoration: "none",
@@ -27,7 +30,11 @@ export default function TaskListItem({ task,
     }
 
 
-    return <Card elevation={3} sx={{ mb: 2 }}>
+    return <Card elevation={3} sx={{ 
+        mb: 2, 
+        borderLeft: (theme) => `${theme.spacing(0.5)} solid
+        ${priorityOptionsData[task.priority].color || "#ffffff"}`
+        }}>
         <CardHeader sx={{
             pt: 1,
             pb: 1
