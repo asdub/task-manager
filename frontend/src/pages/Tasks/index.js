@@ -6,10 +6,16 @@ import TaskListItem from "./TaskListItem";
 import useRequestResource from 'src/hooks/useRequestResource';
 
 export default function Tasks() {
-  const { resourceList, getResourceList, deleteResource } = 
+  const { resourceList, getResourceList, deleteResource, updateResource } = 
   useRequestResource({ endpoint: "tasks", resourceLabel: "Task" })
   const [open, setOpen] = useState(false);
   const [idToDelete, setIdToDelete] = useState(null);
+
+  const handleUpdateCompleted = (task) => {
+    updateResource(task.id, {
+      completed: !task.completed
+    })
+  }
 
   const handleConfirmDelete = (id) => {
     setIdToDelete(id);
@@ -66,6 +72,7 @@ export default function Tasks() {
             <TaskListItem 
               task={task} 
               handleConfirmDelete={handleConfirmDelete}
+              handleUpdateCompleted={handleUpdateCompleted}
             />
           </div>
         )
