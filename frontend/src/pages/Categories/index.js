@@ -42,10 +42,10 @@ export default function Categories() {
            Do you wish to delete this category?
         </DialogTitle>
         <DialogActions>
-          <Button variant="outlined" onClick={handleDelete}>
-            Yes  
+          <Button variant="contained" onClick={handleDelete}>
+            Delete  
           </Button>
-          <Button variant="contained" onClick={handleDeleteClose}>
+          <Button variant="outlined" onClick={handleDeleteClose}>
             Cancel
           </Button>
         </DialogActions>

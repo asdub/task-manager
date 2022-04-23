@@ -49,7 +49,7 @@ export default function useRequestResource({
                 axios.post(`/api/${endpoint}/`, values, getCommonOptions())
                     .then(() => {
                         setLoading(false);
-                        enqueueSnackbar(`${resourceLabel} added.`)
+                        enqueueSnackbar(`${resourceLabel} added!`)
                         if (successCallback) {
                             successCallback();
                         }

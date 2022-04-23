@@ -14,7 +14,7 @@ import {
     Button
 } from "@mui/material";
 import { lightGreen, cyan, amber, red } from "@mui/material/colors";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import * as yup from "yup";
 
 import ColorBox from "src/components/ColorBox";
@@ -53,7 +53,12 @@ const validationSchema = yup.object({
 const categories = [];
 
 export default function TaskDetails() {
-    const { getResourceList, resourceList: categoryList } = useRequestResource({ endpoint: "categories"});
+    const { getResourceList, resourceList: categoryList } = 
+    useRequestResource({ endpoint: "categories"});
+    const { addResource, updateResource, getResource, resource } = 
+    useRequestResource({ endpoint: "tasks", resourceLabel: "New Task"});
+    const navigate = useNavigate();
+    const { id } = useParams();
     const [initialValues, setInitialValues] = useState({
         title: "",
         description: "",
@@ -65,7 +70,33 @@ export default function TaskDetails() {
         getResourceList();
     }, [getResourceList])
 
+    useEffect(() => {
+        if (id) {
+            getResource(id);
+        }
+    }, [id, getResource])
+
+    useEffect(() => {
+        if(resource) {
+            setInitialValues({
+                title: resource.title,
+                description: resource.description || "",
+                category: resource.category,
+                priority: resource.priority
+            })
+        }
+    }, [resource])
+
     const handleSubmit = (values) => {
+        if (id) {
+            updateResource(id, values, () => {
+                navigate("/tasks")
+            })
+            return;
+        }
+        addResource(values, () => {
+            navigate("/tasks")
+        })
     };
 
     return (
@@ -75,7 +106,7 @@ export default function TaskDetails() {
             padding: (theme) => theme.spacing(3)
         }}>
             <Typography variant="h6" mb={4}>
-                {/*id ? "Edit Task" : */"Create Task"}
+                {id ? "Edit Task" : "Create Task"}
             </Typography>
             <Formik
                 onSubmit={handleSubmit}
@@ -210,7 +241,7 @@ export default function TaskDetails() {
                                             variant="contained"
                                             color="primary"
                                         >
-                                            Submit
+                                            {id ? "Save" : "Create"}
                                         </Button>
                                     </Box>
                                 </Grid>
