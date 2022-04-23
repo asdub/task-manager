@@ -20,7 +20,7 @@ export default function RequireNoAuth() {
     }
 
     if (isAuthenticated === true) {
-        return <Navigate to="/categories" />
+        return <Navigate to="/" />
     }
 
     return (

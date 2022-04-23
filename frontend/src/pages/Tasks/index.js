@@ -136,9 +136,9 @@ export default function Tasks() {
       }}>
         <Pagination
           color="primary"
-          count={Math.ceil(resourceList.count / pageSize)}
           page={query.page ? parseInt(query.page) : 1}
           onChange={handlePagePagination}
+          count={Math.ceil(resourceList.count / pageSize) || 0}
         />
       </Box>
     </div>
