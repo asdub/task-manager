@@ -1,5 +1,7 @@
+from django.db.models import Count
 from rest_framework import viewsets, permissions, filters
-from .serializers import CategorySerializer, TaskSerializer
+from rest_framework.response import Response
+from .serializers import CategorySerializer, DashboardTaskCompletionSerializer, TaskSerializer
 from rest_framework.pagination import PageNumberPagination
 
 from .models import Category, Task
@@ -32,8 +34,8 @@ class TaskViewSet(viewsets.ModelViewSet):
     pagination_class = StandardResultsSetPagination
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['title']
-    ordering_fields =['completed']
-    ordering = ['completed']
+    ordering_fields =['completed', '-created']
+    ordering = ['completed', '-created']
 
     def get_queryset(self):
         user = self.request.user
@@ -55,3 +57,15 @@ class TaskViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         return serializer.save(created_by=self.request.user)
+
+
+class DashboardTaskCompletionViewset(viewsets.ViewSet):
+    permissions_classes = [
+        permissions.IsAuthenticated
+    ]
+
+    def list(self, request):
+        user = self.request.user
+        queryset = Task.objects.filter(created_by=user).values('completed').annotate(count=Count('completed'))
+        serializer = DashboardTaskCompletionSerializer(queryset, many=True)
+        return Response(serializer.data)

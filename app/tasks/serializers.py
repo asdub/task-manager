@@ -17,3 +17,11 @@ class TaskSerializer(serializers.ModelSerializer):
         model = Task
         fields = '__all__'
         read_only_fields = ['created_by']
+
+
+class DashboardTaskCompletionSerializer(serializers.ModelSerializer):
+    count = serializers.IntegerField()
+
+    class Meta:
+        model = Task
+        fields = ('completed', 'count')
