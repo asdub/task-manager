@@ -25,3 +25,11 @@ class DashboardTaskCompletionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
         fields = ('completed', 'count')
+
+
+class DashboardTaskByCategorySerializer(serializers.ModelSerializer):
+    count = serializers.IntegerField()
+
+    class Meta:
+        model = Category
+        fields = ('id', 'name', 'color', 'count')
