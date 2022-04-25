@@ -17,6 +17,8 @@ import "./index.css";
 import Tasks from "./pages/Tasks";
 import TaskDetails from "./pages/Tasks/TaskDetails";
 import Dashboard from "./pages/Dashboard";
+import RequestPasswordReset from "./pages/Auth/RequestPasswordReset";
+import ResetPasswordConfirm from "./pages/Auth/ResetPasswordConfirm";
 
 export default function App() {
   return <div>
@@ -44,6 +46,8 @@ export default function App() {
                 <Route element={<RequireNoAuth />}>
                   <Route path={`/signup`} element={<SignUp />} />
                   <Route path={`/signin`} element={<SignIn />} />
+                  <Route path={`/password-reset`} element={<RequestPasswordReset />} />
+                  <Route path={`/auth/password-reset/confirm/:uid/:token`} element={<ResetPasswordConfirm />} />
                 </Route>
               </Routes>
             </Box>

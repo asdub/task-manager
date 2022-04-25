@@ -97,7 +97,7 @@ export default function SignIn() {
                                 </LoadingButton>
                                 <Grid container>
                                     <Grid item xs>
-                                        <Link to="/reset-password" key="reset-password">
+                                        <Link to="/password-reset" key="reset-password">
                                             Forgot password?
                                         </Link>
                                     </Grid>
