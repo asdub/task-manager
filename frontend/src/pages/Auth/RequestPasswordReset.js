@@ -5,6 +5,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Formik } from "formik";
 import * as yup from "yup";
 import { Link } from "react-router-dom";
+import ReCAPTCHA from "react-google-recaptcha";
 
 import useRequestAuth from "src/hooks/useRequestAuth";
 
@@ -17,10 +18,20 @@ const validationSchema = yup.object({
 
 export default function RequestPasswordReset() {
     const { requestPasswordReset, loading } = useRequestAuth();
+    const [captchaRes, setCaptchaRes] = useState(null);
 
     const handleSubmit = (values) => {
-        requestPasswordReset(values.email);
+        requestPasswordReset(values.email, captchaRes);
+        setCaptchaRes(null);
     };
+
+    const handleSetCaptcha = (value) => {
+        setCaptchaRes(value);
+    }
+
+    const handleCaptchaExpired = () => {
+        setCaptchaRes(null);
+    }
 
     return (
         <Container maxWidth="xs">
@@ -75,8 +86,20 @@ export default function RequestPasswordReset() {
                                     error={formik.touched.email && Boolean(formik.errors.email)}
                                     helperText={formik.touched.email && formik.errors.email}
                                 />
-
+                                    <Box sx={{
+                                        display: "flex",
+                                        justifyContent: "center"
+                                        }}
+                                    >
+                                        <ReCAPTCHA 
+                                            onChange={handleSetCaptcha}
+                                            onExpired={handleCaptchaExpired}
+                                            sitekey={process.env.REACT_APP_GOOGLE_RECAPTCHA_SITEKEY}
+                                            size={"normal"}
+                                        />
+                                    </Box>
                                 <LoadingButton
+                                    disabled={!captchaRes}
                                     loading={loading}
                                     variant="contained"
                                     fullWidth

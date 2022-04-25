@@ -20,15 +20,15 @@ export default function useRequestAuth() {
         setLoading(false);
     }, [enqueueSnackbar, setLoading, setError])
 
-    const requestPasswordReset = useCallback((email, successCallback) => {
+    const requestPasswordReset = useCallback((email, gRecaptchaRes) => {
         setLoading(true);
-        axios.post("/api/auth/users/reset_password/", { email })
+        axios.post("/api/auth/users/reset_password/", { 
+            email, 
+            g_recaptcha_response: gRecaptchaRes})
             .then(() => {
                 setLoading(false);
                 enqueueSnackbar(`Password reset link sent to ${email}`)
-                if (successCallback) {
-                    successCallback();
-                }
+
             }).catch(handleReuqestError)
     }, [enqueueSnackbar, handleReuqestError])
 
