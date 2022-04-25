@@ -83,7 +83,7 @@ TEMPLATES = [
     },
 ]
 
-GOOGLE_RECAPTCHA_SECRET = env('GOOGLE_RECAPTCHA_SECRET', default="")
+GOOGLE_RECAPTCHA_SECRET = env('GOOGLE_RECAPTCHA_SECRET')
 
 EMAIL_BACKEND = 'anymail.backends.mailgun.EmailBackend'
 DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL')
@@ -95,7 +95,7 @@ ANYMAIL = {
 AUTH_USER_MODEL = 'users.CustomUser'
 
 DJOSER = {
-    "PASSWORD_RESET_CONFIRM_URL": "auth/password-reset/confirm/{uid}/{token}",
+    "PASSWORD_RESET_CONFIRM_URL": "password-reset/confirm/{uid}/{token}",
     "SERIALIZERS": {
         'password_reset': 'users.serializers.CustomSendEmailResetSerializer'
     }

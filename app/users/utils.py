@@ -5,16 +5,15 @@ from rest_framework import serializers
 from distutils.log import error
 import requests
 
-error_code = "google_recaptcha_error"
+error_code = "g_recaptcha_response"
 error_message = "Invalid ReCAPTCHA, please try again"
 
 
 def validate_g_recaptcha_response(data):
     try:
-        if "google_recaptcha_error" not in data:
+        if "g_recaptcha_response" not in data:
             raise ValidationError(code=error_code, message=error_message)
-        recaptcha_response = data['google_recaptcha_error']
-        print(djSettings)
+        recaptcha_response = data['g_recaptcha_response']
         req_data = {
             'secret': djSettings.GOOGLE_RECAPTCHA_SECRET,
             'response': recaptcha_response
@@ -30,5 +29,5 @@ def validate_g_recaptcha_response(data):
         raise ValidationError(code=error_code, message=error_message)
     except django_exceptions.ValidationError as e:
         raise serializers.ValidationError({
-            "google_recaptcha_error": e.message
+            "g_recaptcha_response": e.message
         })
