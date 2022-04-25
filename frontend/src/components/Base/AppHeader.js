@@ -10,13 +10,15 @@ import {
     TextField,
     Box,
     Modal,
-    CircularProgress
+    CircularProgress,
+    useTheme
 } from "@mui/material";
-import { AccountCircle } from "@mui/icons-material";
 import MenuIcon from "@mui/icons-material/Menu";
+import { AccountCircle, Brightness4, Brightness7 } from "@mui/icons-material";
 
 import { AuthContext } from "src/context/AuthContextProvider"
 import useRequestAuth from "src/hooks/useRequestAuth";
+import { ThemeModeContext } from "src/context/ThemeModeProvider";
 
 const drawerWidth = 240;
 
@@ -32,6 +34,8 @@ const modalStyle = {
 };
 
 export function AppHeader({ mobileOpen, setMobileOpen }) {
+    const themeMode = React.useContext(ThemeModeContext);
+    const theme = useTheme();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const [modalIsOpen, setModalIsOpen] = React.useState(false);
@@ -102,6 +106,11 @@ export function AppHeader({ mobileOpen, setMobileOpen }) {
 
     const authLinks = (
         <Box sx={{ display: "flex", alignItems: "center" }}>
+            <IconButton sx={{ ml: 1 }} onClick={themeMode.toggleThemeMode}>
+                {theme.palette.mode === "dark" ? 
+                <Brightness7 /> : 
+                <Brightness4 />}
+            </IconButton>
             <IconButton
                 aria-label="account of current user"
                 aria-controls="menu-appbar"

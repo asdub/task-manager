@@ -19,9 +19,10 @@ import TaskDetails from "./pages/Tasks/TaskDetails";
 import Dashboard from "./pages/Dashboard";
 import RequestPasswordReset from "./pages/Auth/RequestPasswordReset";
 import ResetPasswordConfirm from "./pages/Auth/ResetPasswordConfirm";
+import ThemeModeProvider from "./context/ThemeModeProvider";
 
 export default function App() {
-  return <div>
+  return <ThemeModeProvider>
     <CssBaseline />
       <AuthContextProvider>
         <SnackbarProvider>
@@ -47,14 +48,14 @@ export default function App() {
                   <Route path={`/signup`} element={<SignUp />} />
                   <Route path={`/signin`} element={<SignIn />} />
                   <Route path={`/password-reset`} element={<RequestPasswordReset />} />
-                  <Route path={`/auth/password-reset/confirm/:uid/:token`} element={<ResetPasswordConfirm />} />
+                  <Route path={`/password-reset/confirm/:uid/:token`} element={<ResetPasswordConfirm />} />
                 </Route>
               </Routes>
             </Box>
           </Router>
         </SnackbarProvider>
       </AuthContextProvider>
-  </div>
+  </ThemeModeProvider>
 }
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
