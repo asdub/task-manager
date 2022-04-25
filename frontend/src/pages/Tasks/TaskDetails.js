@@ -13,35 +13,12 @@ import {
     Typography,
     Button
 } from "@mui/material";
-import { lightGreen, cyan, amber, red } from "@mui/material/colors";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import * as yup from "yup";
 
 import ColorBox from "src/components/ColorBox";
 import useRequestResource from "src/hooks/useRequestResource";
-
-const priorityOptionsData = {
-    1: {
-        label: "Low",
-        color: lightGreen[500],
-    },
-    2: {
-        label: "Medium",
-        color: cyan[500],
-    },
-    3: {
-        label: "High",
-        color: amber[500],
-    },
-    4: {
-        label: "Urgent",
-        color: red[500],
-    },
-};
-const priorityOptionsDataList = Object
-    .keys(priorityOptionsData)
-    .map(key => ({ key, ...priorityOptionsData[key], value: key }));
-
+import priorityOptionsData, { priorityOptionsDataList} from "src/data/priorityOptionsData";
 
 const validationSchema = yup.object({
     title: yup.string().required("Title is required").max(100, "Max length is 100"),
