@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework.authtoken',
+    'anymail',
     'djoser',
     'users',
     'tasks',
@@ -82,10 +83,22 @@ TEMPLATES = [
     },
 ]
 
+GOOGLE_RECAPTCHA_SECRET = env('GOOGLE_RECAPTCHA_SECRET', default="")
+
+EMAIL_BACKEND = 'anymail.backends.mailgun.EmailBackend'
+DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL')
+
+ANYMAIL = {
+    'MAILGUN_API_KEY': env('MAILGUN_API_KEY')
+}
+
 AUTH_USER_MODEL = 'users.CustomUser'
 
 DJOSER = {
-    "PASSWORD_RESET_CONFIRM_URL": "auth/password-reset/confirm/{uid}/{token}"
+    "PASSWORD_RESET_CONFIRM_URL": "auth/password-reset/confirm/{uid}/{token}",
+    "SERIALIZERS": {
+        'password_reset': 'users.serializers.CustomSendEmailResetSerializer'
+    }
 }
 
 WSGI_APPLICATION = 'app.wsgi.application'
