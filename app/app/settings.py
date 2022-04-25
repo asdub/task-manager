@@ -96,6 +96,7 @@ AUTH_USER_MODEL = 'users.CustomUser'
 
 DJOSER = {
     "PASSWORD_RESET_CONFIRM_URL": "password-reset/confirm/{uid}/{token}",
+    "PASSWORD_RESET_CONFIRM_RETYPE": True,
     "SERIALIZERS": {
         'password_reset': 'users.serializers.CustomSendEmailResetSerializer'
     }
