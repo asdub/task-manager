@@ -47,25 +47,28 @@ class TestTasksCreate(APITestCase):
 
     
     def test_category_create_no_auth(self):
+        # Attempt category creation without authorisation
         self.client.logout()
         response = self.client.post(reverse('categories-list'), self.sample_category, format='json')
-        print(f'Category No Auth Response: {response.status_code}')
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        print(f'Category No Auth Response: {response.status_code}')
  
 
-    def test_category_create_with_auth(self):
+    def test_category_create_patch_delete_with_auth(self):
+        # Create and check test category
         response = self.client.post(reverse('categories-list'), self.sample_category, format='json')
-        print(f'Category Create Response: {response.status_code}')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Category.objects.count(), 1)
         self.assertEqual(Category.objects.get().name, 'Test Category')
+        print(f'Category Create Response: {response.status_code}')
 
-    
-    def test_category_delete_with_auth(self):
-        response = self.client.post(reverse('categories-list'), self.sample_category, format='json')
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(Category.objects.count(), 1)
+        # Patch and check test category
+        patch_responce = self.client.patch(reverse('categories-detail', kwargs={'pk': 1}), {"name": "Test Patch"}, format='json')
+        self.assertEqual(patch_responce.status_code, status.HTTP_200_OK)
+        self.assertEqual(Category.objects.get().name, 'Test Patch')
+        print(f'Category Patch Response: {patch_responce.status_code}')
 
+        # Delete and check test category
         del_response = self.client.delete(reverse('categories-detail', kwargs={'pk': 1}))
         self.assertEqual(del_response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(Category.objects.count(), 0)
@@ -73,21 +76,37 @@ class TestTasksCreate(APITestCase):
 
 
     def test_task_create_no_auth(self):
+        # Attempt task creation without authorisation
         self.client.logout()
         response = self.client.post(reverse('tasks-list'), self.sample_task, format='json')
         print(f'Task Create No Auth Response: {response.status_code}')
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
-    def test_task_create_with_auth(self):
+    def test_task_create_patch_delete_with_auth(self):
+        # Create and check test category
         cat_response = self.client.post(reverse('categories-list'), self.sample_category, format='json')
-        print(f'Category Create Response: {cat_response.status_code}')
         self.assertEqual(cat_response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Category.objects.count(), 1)
         self.assertEqual(Category.objects.get().name, 'Test Category')
+        print(f'Category Create Response: {cat_response.status_code}')
 
+        # Create and check test task
         task_response = self.client.post(reverse('tasks-list'), self.sample_task, format='json')
-        print(f'Task Create Response: {task_response.status_code}')
         self.assertEqual(task_response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Task.objects.count(), 1)
         self.assertEqual(Task.objects.get().title, 'Test Task')
+        print(f'Task Create Response: {task_response.status_code}')
+
+        # Patch and check test task
+        patch_responce = self.client.patch(reverse('tasks-detail', kwargs={'pk': 1}), {"completed": "True"}, format='json')
+        self.assertEqual(patch_responce.status_code, status.HTTP_200_OK)
+        self.assertEqual(Task.objects.get().completed, True)
+        print(f'Task Patch Response: {patch_responce.status_code}')
+
+        # Delete and check test task
+        del_response = self.client.delete(reverse('tasks-detail', kwargs={'pk': 1}))
+        self.assertEqual(del_response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(Task.objects.count(), 0)
+        print(f'Task Delete Response: {del_response.status_code}')
+
