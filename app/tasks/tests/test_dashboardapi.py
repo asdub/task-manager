@@ -8,6 +8,8 @@ from rest_framework.authtoken.models import Token
 
 from tasks.models import Task, Category
 
+from pprint import pprint
+
 
 User = get_user_model()
 
@@ -69,3 +71,40 @@ class TestTasksCreate(APITestCase):
         self.assertEqual(dash_response.data, [{'completed': False, 'count': 1}, {'completed': True, 'count': 1}])
         print(f'Task Dashboard Response: {dash_response.status_code}')
        
+
+    def test_task_category_distribution(self):
+        # Create and test categories via api
+        cat_response = self.client.post(reverse('categories-list'), self.sample_category, format='json')
+        self.assertEqual(cat_response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(Category.objects.count(), 1)
+        self.assertEqual(Category.objects.get().name, 'Test Category')
+
+        # Create task via api and db query, test and update task object completion status and test
+        task_response = self.client.post(reverse('tasks-list'), self.sample_task, format='json')
+        self.assertEqual(task_response.status_code, status.HTTP_201_CREATED)
+        task_false = Task.objects.get(pk=1)
+        task_false.categories = Category.objects.get(pk=1)
+        task_false.completed = False
+        task_false.save()
+
+        # Create additional categories via db queries. 
+        additional_category = Category.objects.get(pk=1)
+        additional_category.pk = None
+        additional_category.id = None
+        additional_category.color = '000000'
+        additional_category.save()
+        self.assertEqual(Category.objects.count(), 2)
+
+        # Test category data
+        response = self.client.get(reverse('tasks-category-distribution-list'))
+        self.assertEqual(len(response.data), 2)
+        for d in response.data:
+            if d['id'] == 1:
+                self.assertEqual(d['count'], 1)
+            if d['id'] == 2:
+                self.assertEqual(d['count'], 0)
+            
+            
+
+
+        
