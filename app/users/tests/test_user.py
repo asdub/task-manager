@@ -4,12 +4,13 @@ from django.urls import reverse
 from rest_framework.test import APITestCase
 from rest_framework import status
 from django.contrib.auth import get_user_model
-from rest_framework.authtoken.models import Token
+
+from tasks.models import Task, Category
 
 
 User = get_user_model()
 
-class TestTasksCreate(APITestCase):
+class TestUser(APITestCase):
 
     @classmethod
     def setUpTestData(cls):
@@ -43,32 +44,37 @@ class TestTasksCreate(APITestCase):
 
 
     def setUp(self):
-        self.url = reverse('customuser-list')
-        self.token = Token.objects.create(user=self.user)
-        response = self.client.post(self.url, self.user, format='json')
-        print(f'User Setup Response: {response}')
+        # Register user
+        register_response = self.client.post(reverse('customuser-list'), self.userdata, format='json')
+        self.assertEqual(register_response.status_code, status.HTTP_201_CREATED)
+        
+        # Authenticate user
+        login_response = self.client.post(
+            reverse('login'), 
+            {
+                'username': self.userdata['username'], 
+                'password': self.userdata['password']
+            }, 
+            format='json'
+            )
+        self.assertEqual(login_response.status_code, status.HTTP_200_OK )
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + login_response.data['auth_token'])
 
-        self.client.login(username=self.user.username, password=self.user.password)
-        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
- 
 
-    def test_category_create_with_auth(self):
-        response = self.client.post(reverse('categories-list'), self.sample_category, format='json')
-        print(f'Category Create Response: {response}')
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(Category.objects.count(), 1)
-        self.assertEqual(Category.objects.get().name, 'Test Category')
-
-
-    def test_task_create_with_auth(self):
+    def test_login(self):
+        # Create and check test category
         cat_response = self.client.post(reverse('categories-list'), self.sample_category, format='json')
-        print(f'Category Create Response: {cat_response}')
         self.assertEqual(cat_response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Category.objects.count(), 1)
         self.assertEqual(Category.objects.get().name, 'Test Category')
+        print(f'Category Create Response: {cat_response.status_code}')
 
+        # Create and check test task
         task_response = self.client.post(reverse('tasks-list'), self.sample_task, format='json')
-        print(f'Task Create Response: {task_response}')
         self.assertEqual(task_response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Task.objects.count(), 1)
         self.assertEqual(Task.objects.get().title, 'Test Task')
+        print(f'Task Create Response: {task_response.status_code}')
+
+        dash_response = self.client.get(reverse('tasks-completion-list'))
+        print(dash_response.json())

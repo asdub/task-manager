@@ -8,12 +8,9 @@ from rest_framework.authtoken.models import Token
 
 from tasks.models import Task, Category
 
-from pprint import pprint
-
-
 User = get_user_model()
 
-class TestTasksCreate(APITestCase):
+class TestTasksDashboard(APITestCase):
 
     @classmethod
     def setUpTestData(cls):
