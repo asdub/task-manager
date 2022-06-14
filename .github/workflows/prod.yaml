@@ -26,10 +26,10 @@ jobs:
           pip install -r requirements.txt
       - name: Run migrations
         run: |
-          python /app/manage.py migrate --noinput
+          python app/manage.py migrate --noinput
       - name: Run Tests
         run: |
-          python /app/manage.py test
+          python app/manage.py test
       - name: Check Syntax
         run: pycodestyle --statistics names
   deploy-job:
