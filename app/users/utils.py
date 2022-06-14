@@ -10,24 +10,29 @@ error_message = "Invalid ReCAPTCHA, please try again"
 
 
 def validate_g_recaptcha_response(data):
-    try:
-        if "g_recaptcha_response" not in data:
-            raise ValidationError(code=error_code, message=error_message)
-        recaptcha_response = data['g_recaptcha_response']
-        req_data = {
-            'secret': djSettings.GOOGLE_RECAPTCHA_SECRET,
-            'response': recaptcha_response
-        }
+    # Bypass captcha in testing environment
+    if djSettings.TESTING:
+        return data
 
-        r = requests.post(
-            'https://www.google.com/recaptcha/api/siteverify',
-            data=req_data
-        )
-        result = r.json()
-        if (result['success']):
-            return data
-        raise ValidationError(code=error_code, message=error_message)
-    except django_exceptions.ValidationError as e:
-        raise serializers.ValidationError({
-            "g_recaptcha_response": e.message
-        })
+    else:
+        try:
+            if "g_recaptcha_response" not in data:
+                raise ValidationError(code=error_code, message=error_message)
+            recaptcha_response = data['g_recaptcha_response']
+            req_data = {
+                'secret': djSettings.GOOGLE_RECAPTCHA_SECRET,
+                'response': recaptcha_response
+            }
+
+            r = requests.post(
+                'https://www.google.com/recaptcha/api/siteverify',
+                data=req_data
+            )
+            result = r.json()
+            if (result['success']):
+                return data
+            raise ValidationError(code=error_code, message=error_message)
+        except django_exceptions.ValidationError as e:
+            raise serializers.ValidationError({
+                "g_recaptcha_response": e.message
+            })

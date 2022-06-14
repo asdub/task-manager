@@ -4,6 +4,7 @@ from django.urls import reverse
 from rest_framework.test import APITestCase
 from rest_framework import status
 from django.contrib.auth import get_user_model
+from django.contrib.auth.tokens import default_token_generator
 
 from tasks.models import Task, Category
 
@@ -58,7 +59,8 @@ class TestUser(APITestCase):
             format='json'
             )
         self.assertEqual(login_response.status_code, status.HTTP_200_OK )
-        self.client.credentials(HTTP_AUTHORIZATION='Token ' + login_response.data['auth_token'])
+        self.token = 'Token ' + login_response.data['auth_token']
+        self.client.credentials(HTTP_AUTHORIZATION=self.token)
 
 
     def test_login(self):
@@ -67,14 +69,35 @@ class TestUser(APITestCase):
         self.assertEqual(cat_response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Category.objects.count(), 1)
         self.assertEqual(Category.objects.get().name, 'Test Category')
-        print(f'Category Create Response: {cat_response.status_code}')
+        print(f'Login Category Post Response: {cat_response.status_code}')
 
-        # Create and check test task
-        task_response = self.client.post(reverse('tasks-list'), self.sample_task, format='json')
-        self.assertEqual(task_response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(Task.objects.count(), 1)
-        self.assertEqual(Task.objects.get().title, 'Test Task')
-        print(f'Task Create Response: {task_response.status_code}')
+    
+    def test_logout(self):
+        logout_response = self.client.post(reverse('logout'), self.token, format='json')
+        self.assertEqual(logout_response.status_code, status.HTTP_204_NO_CONTENT)
+        print(f'Logout Responce: {logout_response.status_code}')
 
-        dash_response = self.client.get(reverse('tasks-completion-list'))
-        print(dash_response.json())
+    
+    def test_passwortd_reset(self):
+        self.client.logout()
+
+        data = {
+            'email': self.user.email,
+            'g_recaptcha_response': '1'
+        }
+        # Test Password Reset Request
+        reset_responce = self.client.post(reverse('customuser-reset-password'), data, format='json')
+        self.assertEqual(reset_responce.status_code, status.HTTP_204_NO_CONTENT)
+        print(f'Reset Responce: {reset_responce.status_code}')
+
+        # Test Password Reset Confirmation Request
+        confirmation_data = {
+            'new_password': 'newpassword123!',
+            're_new_password': 'newpassword123!',
+            'uid': 'MQ',
+            'token': default_token_generator.make_token(self.user)
+        }
+        reset__confirmation_responce = self.client.post(reverse('customuser-reset-password-confirm'), confirmation_data, format='json')
+        self.assertEqual(reset__confirmation_responce.status_code, status.HTTP_204_NO_CONTENT)
+        print(f'Reset Confirmation Responce: {reset__confirmation_responce.status_code}')
+      
