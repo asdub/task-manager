@@ -15,13 +15,16 @@ Including another URLconf
 """
 from xml.etree.ElementInclude import include
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, re_path
 from django.urls.conf import include
 from users.urls import urlpatterns as users_urlpatterns
+from frontend import views as frontend_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', frontend_views.index),
     path('', include('tasks.urls')),
 ]
 
 urlpatterns += users_urlpatterns
+urlpatterns += [re_path(r'^.*', frontend_views.index)]
