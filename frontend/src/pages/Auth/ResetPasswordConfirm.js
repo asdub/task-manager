@@ -29,7 +29,7 @@ export default function SignUp() {
             uid,
             token,
             new_password: values.password,
-            re_new_password: values.confrimPassword
+            re_new_password: values.confirmPassword
         }, successCallback)
     };
 
