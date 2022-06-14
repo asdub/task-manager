@@ -1,5 +1,5 @@
 from urllib import response
-from django.utils import timezone
+from django.conf import settings
 from django.urls import reverse
 from rest_framework.test import APITestCase
 from rest_framework import status
@@ -80,7 +80,8 @@ class TestUser(APITestCase):
     
     def test_passwortd_reset(self):
         self.client.logout()
-
+        settings.TESTING = True
+        
         data = {
             'email': self.user.email,
             'g_recaptcha_response': '1'
