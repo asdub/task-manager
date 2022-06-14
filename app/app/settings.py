@@ -33,7 +33,7 @@ DEBUG = True
 TESTING = False
 
 ALLOWED_HOSTS = [
-    'https://taskmanager-asdub.herokuapp.com/',
+    'taskmanager-asdub.herokuapp.com',
     'localhost'
 ]
 
