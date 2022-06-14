@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 import environ
 import os
+import dj_database_url
 
 # Initialise environment variables
 env = environ.Env()
@@ -29,13 +30,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = env('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug or testing turned on in production!
-DEBUG = True
+DEBUG = (env('DEBUG', default='False') == 'True')
 TESTING = False
 
-ALLOWED_HOSTS = [
-    'taskmanager-asdub.herokuapp.com',
-    'localhost'
-]
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -123,7 +121,12 @@ DATABASES = {
     }
 }
 
+IS_HEROKU = (env('IS_HEROKU', default='False') == 'True')
+if (IS_HEROKU == True):
+    DATABASES['default'] = dj_database_url.parse(env('DATABASE_URL'))
+    ALLOWED_HOSTS = ['taskmanager-asdub.herokuapp.com']
 
+    
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
