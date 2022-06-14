@@ -17,6 +17,8 @@ jobs:
     env:
         DJANGO_SECRET_KEY: ${{secrets.DJANGO_SECRET_KEY}}
         GOOGLE_RECAPTCHA_SECRET: ${{secrets.GOOGLE_RECAPTCHA_SECRET}}
+        DEFAULT_FROM_EMAIL: ${{secrets.DEFAULT_FROM_EMAIL}}
+        MAILGUN_API_KEY: ${{secrets.MAILGUN_API_KEY}}
 
     steps:
       - uses: actions/checkout@v2
