@@ -32,7 +32,10 @@ SECRET_KEY = env('DJANGO_SECRET_KEY')
 DEBUG = True
 TESTING = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'https://taskmanager-asdub.herokuapp.com/',
+    'localhost'
+]
 
 
 # Application definition
