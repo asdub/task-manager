@@ -14,6 +14,9 @@ jobs:
       matrix:
         python-version: [3.7]
 
+    env:
+        DJANGO_SECRET_KEY: ${{secrets.DJANGO_SECRET_KEY}}
+
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }}
@@ -28,8 +31,6 @@ jobs:
         run: |
           python app/manage.py makemigrations --noinput
           python app/manage.py migrate --noinput
-        env:
-          secret_key: ${{secrets.DJANGO_SECRET_KEY}}
       - name: Run Tests
         run: |
           python app/manage.py test
