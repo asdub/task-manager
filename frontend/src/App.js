@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { CssBaseline, Box } from "@mui/material";
 import { SnackbarProvider } from "notistack";
 
+import Admin from "./pages/Admin";
 import Categories from "./pages/Categories";
 import CategoryDetails from "./pages/Categories/CategoryDetails";
 import SignUp from "./pages/Auth/SignUp";
@@ -33,6 +34,7 @@ export default function App() {
               width: "100%"
             }}>
               <Routes>
+                <Route path="/admin" element={<Admin />} />
                 <Route element={<RequireAuth />}>
                   <Route element={<Base />}>
                     <Route path="/categories" element={<Categories />} />
