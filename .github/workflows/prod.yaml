@@ -1,0 +1,51 @@
+name: Main Workflow - Test/ Deploy
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  check-job:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: [3.7]
+
+    env:
+        DJANGO_SECRET_KEY: ${{secrets.DJANGO_SECRET_KEY}}
+        GOOGLE_RECAPTCHA_SECRET: ${{secrets.GOOGLE_RECAPTCHA_SECRET}}
+        DEFAULT_FROM_EMAIL: ${{secrets.DEFAULT_FROM_EMAIL}}
+        MAILGUN_API_KEY: ${{secrets.MAILGUN_API_KEY}}
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Run migrations
+        run: |
+          python app/manage.py migrate --noinput
+      - name: Run Tests
+        run: |
+          python app/manage.py test
+      - name: Check Syntax
+        run: pycodestyle --statistics --ignore E129,E501,W503,W504 app
+  deploy-job:
+      runs-on: ubuntu-latest
+      needs: [check-job]
+      if: ${{ github.event_name == 'push' }}
+      steps:
+        - uses: actions/checkout@v2
+        - uses: akhileshns/heroku-deploy@v3.12.12
+          with:
+            heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+            heroku_app_name: ${{secrets.HEROKU_APP_NAME}}
+            heroku_email: ${{secrets.HEROKU_EMAIL}}

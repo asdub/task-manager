@@ -11,12 +11,13 @@ from tasks.models import Task, Category
 
 User = get_user_model()
 
+
 class TestUser(APITestCase):
 
     @classmethod
     def setUpTestData(cls):
         cls.user = User.objects.create_user(
-            username='testuser', 
+            username='testuser',
             email='test@test.com',
             password='12345'
         )
@@ -28,8 +29,8 @@ class TestUser(APITestCase):
         }
 
         cls.sample_category = {
-            'name': 'Test Category', 
-            'color': 'FFC0CB', 
+            'name': 'Test Category',
+            'color': 'FFC0CB',
         }
 
         cls.sample_task = {
@@ -43,52 +44,79 @@ class TestUser(APITestCase):
 
         }
 
-
     def setUp(self):
         # Register user
-        register_response = self.client.post(reverse('customuser-list'), self.userdata, format='json')
-        self.assertEqual(register_response.status_code, status.HTTP_201_CREATED)
-        
+        register_response = self.client.post(
+            reverse('customuser-list'),
+            self.userdata,
+            format='json'
+        )
+        self.assertEqual(
+            register_response.status_code,
+            status.HTTP_201_CREATED
+        )
         # Authenticate user
         login_response = self.client.post(
-            reverse('login'), 
+            reverse('login'),
             {
-                'username': self.userdata['username'], 
+                'username': self.userdata['username'],
                 'password': self.userdata['password']
-            }, 
+            },
             format='json'
-            )
-        self.assertEqual(login_response.status_code, status.HTTP_200_OK )
+        )
+        self.assertEqual(
+            login_response.status_code,
+            status.HTTP_200_OK
+        )
         self.token = 'Token ' + login_response.data['auth_token']
         self.client.credentials(HTTP_AUTHORIZATION=self.token)
 
-
     def test_login(self):
         # Create and check test category
-        cat_response = self.client.post(reverse('categories-list'), self.sample_category, format='json')
-        self.assertEqual(cat_response.status_code, status.HTTP_201_CREATED)
+        cat_response = self.client.post(
+            reverse('categories-list'),
+            self.sample_category,
+            format='json'
+        )
+        self.assertEqual(
+            cat_response.status_code,
+            status.HTTP_201_CREATED
+        )
         self.assertEqual(Category.objects.count(), 1)
         self.assertEqual(Category.objects.get().name, 'Test Category')
         print(f'Login Category Post Response: {cat_response.status_code}')
 
-    
     def test_logout(self):
-        logout_response = self.client.post(reverse('logout'), self.token, format='json')
-        self.assertEqual(logout_response.status_code, status.HTTP_204_NO_CONTENT)
+        logout_response = self.client.post(
+            reverse('logout'),
+            self.token,
+            format='json'
+        )
+        self.assertEqual(
+            logout_response.status_code,
+            status.HTTP_204_NO_CONTENT
+        )
         print(f'Logout Responce: {logout_response.status_code}')
 
-    
     def test_passwortd_reset(self):
         self.client.logout()
         settings.TESTING = True
-        
+
         data = {
             'email': self.user.email,
             'g_recaptcha_response': '1'
         }
+
         # Test Password Reset Request
-        reset_responce = self.client.post(reverse('customuser-reset-password'), data, format='json')
-        self.assertEqual(reset_responce.status_code, status.HTTP_204_NO_CONTENT)
+        reset_responce = self.client.post(
+            reverse('customuser-reset-password'),
+            data,
+            format='json'
+        )
+        self.assertEqual(
+            reset_responce.status_code,
+            status.HTTP_204_NO_CONTENT
+        )
         print(f'Reset Responce: {reset_responce.status_code}')
 
         # Test Password Reset Confirmation Request
@@ -98,7 +126,16 @@ class TestUser(APITestCase):
             'uid': 'MQ',
             'token': default_token_generator.make_token(self.user)
         }
-        reset__confirmation_responce = self.client.post(reverse('customuser-reset-password-confirm'), confirmation_data, format='json')
-        self.assertEqual(reset__confirmation_responce.status_code, status.HTTP_204_NO_CONTENT)
-        print(f'Reset Confirmation Responce: {reset__confirmation_responce.status_code}')
-      
+        reset__confirmation_responce = self.client.post(
+            reverse('customuser-reset-password-confirm'),
+            confirmation_data,
+            format='json'
+        )
+        self.assertEqual(
+            reset__confirmation_responce.status_code,
+            status.HTTP_204_NO_CONTENT
+        )
+        print(
+            f'Reset Confirmation Responce: \
+                {reset__confirmation_responce.status_code}'
+        )

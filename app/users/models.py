@@ -6,6 +6,7 @@ from django.db.models import Q
 from django.core.validators import RegexValidator
 from django.utils.translation import gettext_lazy as _
 
+
 class CustomUserManager(UserManager):
     def get_by_natural_key(self, username):
         return self.get(
@@ -13,9 +14,12 @@ class CustomUserManager(UserManager):
             Q(**{self.model.EMAIL_FIELD: username})
         )
 
+
 # Create your models here.
 class CustomUser(AbstractUser):
-    username_validator = RegexValidator(r'^[0-9a-zA-Z]*$', 'Alphanumeric characters only.')
+    username_validator = RegexValidator(
+        r'^[0-9a-zA-Z]*$', 'Alphanumeric characters only.'
+    )
     username = models.CharField(
         _('username'),
         max_length=150,
