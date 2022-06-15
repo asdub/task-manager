@@ -19,7 +19,7 @@ class CustomUserManager(UserManager):
 class CustomUser(AbstractUser):
     username_validator = RegexValidator(
         r'^[0-9a-zA-Z]*$', 'Alphanumeric characters only.'
-        )
+    )
     username = models.CharField(
         _('username'),
         max_length=150,

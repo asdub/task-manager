@@ -50,7 +50,7 @@ class TestUser(APITestCase):
             reverse('customuser-list'),
             self.userdata,
             format='json'
-            )
+        )
         self.assertEqual(
             register_response.status_code,
             status.HTTP_201_CREATED
@@ -138,4 +138,4 @@ class TestUser(APITestCase):
         print(
             f'Reset Confirmation Responce: \
                 {reset__confirmation_responce.status_code}'
-            )
+        )

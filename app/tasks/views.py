@@ -77,9 +77,9 @@ class DashboardTaskCompletionViewset(viewsets.ViewSet):
             created_by=user
         ).values(
             'completed'
-            ).annotate(
-                count=Count('completed')
-                )
+        ).annotate(
+            count=Count('completed')
+        )
         serializer = DashboardTaskCompletionSerializer(queryset, many=True)
         return Response(serializer.data)
 
@@ -97,11 +97,11 @@ class DashboardByCategoryViewset(viewsets.ViewSet):
             tasks_filter['tasks__completed'] = completed
         queryset = Category.objects.filter(
             created_by=user
-            ).annotate(
-                count=Count(
-                    'tasks',
-                    filter=Q(**tasks_filter)
-                    )
+        ).annotate(
+            count=Count(
+                'tasks',
+                filter=Q(**tasks_filter)
             )
+        )
         serializer = DashboardTaskByCategorySerializer(queryset, many=True)
         return Response(serializer.data)

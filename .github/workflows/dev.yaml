@@ -38,4 +38,4 @@ jobs:
         run: |
           python app/manage.py test
       - name: Check Syntax 
-        run: pycodestyle --statistics exclude=*/migrations/* app
+        run: pycodestyle --statistics --ignore E129,E501,W503,W504 app

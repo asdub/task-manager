@@ -8,11 +8,9 @@ class TaskPermission(permissions.BasePermission):
     message = 'Category not found'
 
     def has_permission(self, request, view):
-        if (
-            view.action == 'create' or
-            view.action == 'update' or
-            view.action == 'partial_update'
-        ):
+        if (view.action == 'create'
+            or view.action == 'update'
+            or view.action == 'partial_update'):
             category = request.data.get('category')
             if category is None:
                 return True
