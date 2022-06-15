@@ -5,9 +5,10 @@ from .utils import validate_g_recaptcha_response
 
 User = get_user_model()
 
+
 class CustomSendEmailResetSerializer(SendEmailResetSerializer):
     g_recaptcha_response = serializers.CharField(required=False)
 
     def validate(seld, data):
-        validated_data = validate_g_recaptcha_response(data);
+        validated_data = validate_g_recaptcha_response(data)
         return validated_data

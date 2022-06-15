@@ -38,4 +38,4 @@ jobs:
         run: |
           python app/manage.py test
       - name: Check Syntax 
-        run: pycodestyle --statistics names
+        run: pycodestyle --statistics app

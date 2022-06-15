@@ -2,6 +2,7 @@ from asyncio import Task
 from rest_framework import serializers
 from tasks.models import Category, Task
 
+
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
@@ -10,8 +11,14 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class TaskSerializer(serializers.ModelSerializer):
-    category_name = serializers.CharField(read_only=True, source="category.name")
-    category_color = serializers.CharField(read_only=True, source="category.color")
+    category_name = serializers.CharField(
+        read_only=True,
+        source="category.name"
+    )
+    category_color = serializers.CharField(
+        read_only=True,
+        source="category.color"
+    )
 
     class Meta:
         model = Task
