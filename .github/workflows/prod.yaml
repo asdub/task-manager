@@ -33,9 +33,12 @@ jobs:
       - name: Run migrations
         run: |
           python app/manage.py migrate --noinput
-      - name: Run Tests
+      - name: Run Tests (User Auth)
         run: |
-          python app/manage.py test
+          python app/manage.py test users
+      - name: Run Tests (Tasks)
+        run: |
+          python app/manage.py test tasks
       - name: Check Syntax
         run: pycodestyle --statistics --ignore E129,E501,W503,W504 app
   deploy-job:
