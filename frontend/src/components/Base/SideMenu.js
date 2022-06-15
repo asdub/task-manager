@@ -86,6 +86,7 @@ export function SideMenu(props) {
                             }}
                             to={li.to}
                             key={li.key}
+                            onClick={() => handleDrawerToggle()}
                         >
                             <ListItem button>
                                 <ListItemIcon>{li.icon}</ListItemIcon>
