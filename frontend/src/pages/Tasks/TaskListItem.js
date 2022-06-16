@@ -5,7 +5,6 @@ import { ListItemIcon, styled, Checkbox, Card, CardHeader,
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline"
 import { Link } from "react-router-dom";
-import ColorLabel from './ColorLabel';
 import priorityOptionsData from 'src/data/priorityOptionsData';
 
 const StyledLink = styled(Link)(({ theme }) => ({
