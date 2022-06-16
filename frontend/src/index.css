@@ -5,10 +5,10 @@
     margin-left: -16px; /* gutter size offset */
     width: auto;
   }
-  .task-masonry-grid_column {
-    padding-left: 16px; /* gutter size */
-    background-clip: padding-box;
-  }
-  .task-masonry-grid_column > div {
-    margin-bottom: 16px;
-  }
+.task-masonry-grid_column {
+  padding-left: 16px; /* gutter size */
+  background-clip: padding-box;
+}
+.task-masonry-grid_column > div {
+  margin-bottom: 16px;
+}

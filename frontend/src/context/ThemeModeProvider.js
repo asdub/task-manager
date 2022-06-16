@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState} from 'react'
 import PropTypes from "prop-types";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { grey } from '@mui/material/colors';
 
 export const ThemeModeContext = React.createContext({
     toggleThemeMode: () => {}
@@ -9,8 +10,38 @@ export const ThemeModeContext = React.createContext({
 const getDesignTokens = (mode) => {
     return {
         palette: {
-            mode
-        }
+            mode,
+            ...(mode === 'light'
+              ? {
+                  // palette values for light mode
+                  primary: {
+                      main: '#136f63',
+                  },
+                  secondary: {
+                    main: '#ffba08',
+                  },
+                  divider: '#3f88c5',
+                  text: {
+                    primary: grey[900],
+                    secondary: grey[800],
+                  },
+                }
+              : {
+                  // palette values for dark mode
+                  primary: {
+                      main: '#ffba08',
+                  },
+                  divider: grey[700],
+                  background: {
+                    default: grey[800],
+                    paper: '#040f16',
+                  },
+                  text: {
+                    primary: '#fff',
+                    secondary: grey[300],
+                  },
+                }),
+          },
     }
 }
 
