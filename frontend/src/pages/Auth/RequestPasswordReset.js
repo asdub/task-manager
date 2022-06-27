@@ -1,13 +1,26 @@
 import React, { useState } from "react";
-import { TextField, Typography, Container, Grid, Box, Avatar } from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
 import LoadingButton from "@mui/lab/LoadingButton";
+import {
+    Avatar,
+    Box,
+    Container,
+    Grid,
+    Fade,
+    Link,
+    TextField,
+    Typography,
+    useTheme,
+} from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Formik } from "formik";
 import * as yup from "yup";
-import { Link } from "react-router-dom";
 import ReCAPTCHA from "react-google-recaptcha";
 
 import useRequestAuth from "src/hooks/useRequestAuth";
+import { ReactComponent as Logo } from "src/assets/svg/task_logo.svg";
+import PasswordResetIllustration from "src/components/Base/Illustrations/PasswordResetIllustration";
+import Footer from "src/components/Base/Footer";
 
 const validationSchema = yup.object({
     email: yup
@@ -19,6 +32,7 @@ const validationSchema = yup.object({
 export default function RequestPasswordReset() {
     const { requestPasswordReset, loading } = useRequestAuth();
     const [captchaRes, setCaptchaRes] = useState(null);
+    const theme = useTheme();
 
     const handleSubmit = (values) => {
         requestPasswordReset(values.email, captchaRes);
@@ -33,96 +47,227 @@ export default function RequestPasswordReset() {
         setCaptchaRes(null);
     }
 
+    const styles = {
+        gridContainer: {
+            height: '100vh',
+            minHeight: '810px',
+            justifyContent: 'flex-start',
+        },
+        gridItem0: {
+            position: 'relative',
+            height: '100%',
+            zIndex: '0',
+            display: {
+                xs: 'none',
+                md: 'block',
+            },
+        },
+        gridItem1: {
+            backgroundColor: 'background.paper',
+            width: '100%',
+            height: '100%',
+            display: 'flex',
+            position: 'relative',
+            alignItems: 'center',
+            px: '1.5rem',
+            justifyContent: 'center',
+        },
+        gridItem0Inner: {
+            flex: '1 1 auto',
+            maxWidth: '480px',
+            p: 2,
+        },
+        boxCenter: {
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+        },
+        BoxSignUpContainer: {
+            top: 0,
+            right: 0,
+            width: '100%',
+            position: 'absolute',
+            display: {
+                xs: 'none',
+                md: 'block',
+            },
+        },
+        BoxSignUp: {
+            width: '100%',
+            height: '80px',
+            display: 'flex',
+            alignItems: 'center',
+            pr: theme.spacing(3),
+            justifyContent: 'flex-end',
+        },
+        boxSignUpBtm: {
+            width: '100%',
+            alignItems: 'center',
+            pt: 4,
+            display: {
+                xs: 'flex',
+                md: 'none',
+            },
+        },
+        undrawBanner: {
+            top: -80,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            display: 'flex',
+            zIndex: -1,
+            position: 'absolute',
+            backgroundColor: 'background.default',
+            backgroundImage:
+                `radial-gradient(${theme.palette.primary.main} 0.5px, transparent 0.5px), \
+                    radial-gradient(${theme.palette.primary.main} 0.5px, transparent 0.5px)`,
+            backgroundSize: '40px 40px',
+            backgroundPosition: '0 0,20px 20px',
+        },
+        logoSm: {
+            width: '100%',
+            height: '80px',
+            alignItems: 'center',
+            pl: theme.spacing(3),
+            display: {
+                xs: 'flex',
+                md: 'none',
+            },
+            top: 0,
+            left: 0,
+            position: 'absolute',
+        },
+        logoMd: {
+            width: '100%',
+            height: '80px',
+            display: 'flex',
+            alignItems: 'center',
+            pl: theme.spacing(3),
+        },
+    };
+
     return (
-        <Container maxWidth="xs">
-            <Box
-                sx={{
-                    marginTop: (theme) => theme.spacing(8),
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    alignItems: "center",
-                }}
-            >
-                <Avatar
-                    sx={{
-                        margin: (theme) => theme.spacing(1),
-                        backgroundColor: (theme) => theme.palette.secondary.main,
-                    }}
-                >
-                    <LockOutlinedIcon />
-                </Avatar>
-                <Typography component="h1" variant="h5" gutterBottom>
-                    Reset Password
-                </Typography>
-                <Formik
-                    onSubmit={handleSubmit}
-                    validationSchema={validationSchema}
-                    validateOnBlur={false}
-                    initialValues={{
-                        email: "",
-                    }}
-                >
-                    {(formik) => {
-                        return (
-                            <form
-                                style={{
-                                    width: "100%", // Fix IE 11 issue.
-                                }}
-                                onSubmit={formik.handleSubmit}
-                            >
-                                <Typography variant="subtitle1" gutterBottom component="div">
-                                    Enter your email address below
-                                </Typography>
-                                <TextField
-                                    variant="outlined"
-                                    margin="normal"
-                                    fullWidth
-                                    required
-                                    id="email"
-                                    label="Email"
-                                    autoFocus
-                                    {...formik.getFieldProps("email")}
-                                    error={formik.touched.email && Boolean(formik.errors.email)}
-                                    helperText={formik.touched.email && formik.errors.email}
+        <Container
+            disableGutters
+            component="main"
+            maxWidth={false}
+            sx={{
+                height: '100vh',
+            }}
+        >
+            <Grid container sx={styles.gridContainer}>
+                <Grid item xs={12} md={5} sx={styles.gridItem0}>
+                    <Box sx={styles.logoMd}>
+                        <Logo className="Logo-md" fill={theme.palette.primary.main} />
+                    </Box>
+                    <Box sx={styles.undrawBanner}>
+                        <Fade in={true} timeout={500}>
+                            <div>
+                                <PasswordResetIllustration
+                                    fillPrimary={theme.palette.primary.main}
+                                    fillSecondary={theme.palette.text.secondary}
                                 />
-                                    <Box sx={{
-                                        display: "flex",
-                                        justifyContent: "center"
-                                        }}
-                                    >
-                                        <ReCAPTCHA 
-                                            onChange={handleSetCaptcha}
-                                            onExpired={handleCaptchaExpired}
-                                            sitekey={process.env.REACT_APP_GOOGLE_RECAPTCHA_SITEKEY}
-                                            size={"normal"}
-                                        />
-                                    </Box>
-                                <LoadingButton
-                                    disabled={!captchaRes}
-                                    loading={loading}
-                                    variant="contained"
-                                    fullWidth
-                                    type="submit"
-                                    color="primary"
-                                    sx={{
-                                        margin: (theme) => theme.spacing(3, 0, 2),
-                                    }}
-                                >
-                                    Send Password Reset Email
-                                </LoadingButton>
-                            </form>
-                        );
-                    }}
-                </Formik>
-                <Grid container justifyContent="flex-end">
-                    <Grid item>
-                        <Link to={"/signin"} key={"signup"}>
-                            {"Go back to sign in page"}
-                        </Link>
-                    </Grid>
+                            </div>
+                        </Fade>
+                    </Box>
                 </Grid>
-            </Box>
+                <Grid item xs={12} md={7} sx={styles.gridItem1}>
+                    <Box sx={styles.logoSm}>
+                        <Logo className="Logo-sm" fill={theme.palette.primary.main} />
+                    </Box>
+                    <Box sx={styles.BoxSignUpContainer}>
+                        <Box sx={styles.BoxSignUp}>
+                            Remembered your password?
+                            <Link
+                                component={RouterLink}
+                                color="primary"
+                                to="/signin"
+                                key="signin"
+                                style={{ paddingLeft: '5px' }}
+                                styles={styles}
+                            >
+                                {" Sign In"}
+                            </Link>
+                        </Box>
+                    </Box>
+                    <Fade in={true} timeout={400}>
+                        <Box sx={styles.gridItem0Inner}>
+                            <Box sx={styles.boxCenter}>
+                                <Box sx={styles.boxCenter}>
+                                    <Avatar sx={{ mr: 1, bgcolor: "primary.main" }}>
+                                        <LockOutlinedIcon />
+                                    </Avatar>
+                                    <Typography component="h2" variant="h5">
+                                        Password Recovery
+                                    </Typography>
+                                </Box>
+                            </Box>
+                            <Formik
+                                onSubmit={handleSubmit}
+                                validationSchema={validationSchema}
+                                validateOnBlur={false}
+                                initialValues={{
+                                    email: "",
+                                }}
+                            >
+                                {(formik) => {
+                                    return (
+                                        <form
+                                            style={{
+                                                width: "100%", // Fix IE 11 issue.
+                                            }}
+                                            onSubmit={formik.handleSubmit}
+                                        >
+                                            <Typography variant="subtitle1" gutterBottom component="div">
+                                                Enter your email address below
+                                            </Typography>
+                                            <TextField
+                                                variant="outlined"
+                                                margin="normal"
+                                                fullWidth
+                                                required
+                                                id="email"
+                                                label="Email"
+                                                autoFocus
+                                                {...formik.getFieldProps("email")}
+                                                error={formik.touched.email && Boolean(formik.errors.email)}
+                                                helperText={formik.touched.email && formik.errors.email}
+                                            />
+                                            <Box sx={{
+                                                display: "flex",
+                                                justifyContent: "center"
+                                            }}
+                                            >
+                                                <ReCAPTCHA
+                                                    onChange={handleSetCaptcha}
+                                                    onExpired={handleCaptchaExpired}
+                                                    sitekey={process.env.REACT_APP_GOOGLE_RECAPTCHA_SITEKEY}
+                                                    size={"normal"}
+                                                />
+                                            </Box>
+                                            <LoadingButton
+                                                disabled={!captchaRes}
+                                                loading={loading}
+                                                variant="contained"
+                                                fullWidth
+                                                type="submit"
+                                                color="primary"
+                                                sx={{
+                                                    margin: (theme) => theme.spacing(3, 0, 2),
+                                                }}
+                                            >
+                                                Send Password Reset Email
+                                            </LoadingButton>
+                                        </form>
+                                    );
+                                }}
+                            </Formik>
+                        </Box>
+                    </Fade>
+                    <Footer />
+                </Grid>
+            </Grid>
         </Container>
     );
 }
