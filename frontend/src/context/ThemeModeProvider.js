@@ -15,32 +15,57 @@ const getDesignTokens = (mode) => {
               ? {
                   // palette values light mode
                   primary: {
-                      main: '#136f63',
+                    main: '#004137',
                   },
                   secondary: {
-                    main: '#ffba08',
+                    main: '#355550',
                   },
-                  divider: '#3f88c5',
+                  accent: {
+                    main: '#f15025',
+                  },
+                  white: {
+                    main: '#FAF9F6',
+                  },
+                  divider: grey[300],
+                  background: {
+                    default: '#efefef',
+                    paper: '#f7f7f7',
+                  },
                   text: {
                     primary: grey[900],
-                    secondary: grey[800],
+                    secondary: grey[600],
                   },
                 }
               : {
                   // palette values dark mode
                   primary: {
-                      main: '#ffba08',
+                      main: '#3ab795',
                   },
-                  divider: grey[700],
+                  secondary: {
+                    main: '#3ab795',
+                  },
+                  divider: grey[900],
                   background: {
-                    default: grey[800],
-                    paper: '#040f16',
+                    default: '#282e37',
+                    paper: '#222831',
+                  },
+                  white: {
+                    main: '#FDFDFD',
                   },
                   text: {
                     primary: '#fff',
                     secondary: grey[300],
                   },
                 }),
+          },
+          breakpoints: {
+            values: {
+              xs: 0,
+              sm: 600,
+              md: 768,
+              lg: 1200,
+              xl: 1536,
+            },
           },
     }
 }

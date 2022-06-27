@@ -216,7 +216,7 @@ export default function Filters({ onSubmit }) {
                                     type="submit"
                                     size="medium"
                                     variant="contained"
-                                    color="primary"
+                                    color="secondary"
                                 >
                                     Search
                                 </Button>

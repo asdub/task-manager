@@ -14,11 +14,16 @@ import {
     useTheme
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import { AccountCircle, Brightness4, Brightness7 } from "@mui/icons-material";
+import {
+    AccountCircle,
+    Brightness2Outlined,
+    Brightness6Outlined
+} from "@mui/icons-material";
 
 import { AuthContext } from "src/context/AuthContextProvider"
 import useRequestAuth from "src/hooks/useRequestAuth";
 import { ThemeModeContext } from "src/context/ThemeModeProvider";
+import { ReactComponent as Logo } from 'src/assets/svg/task_logo.svg';
 
 const drawerWidth = 240;
 
@@ -31,6 +36,14 @@ const modalStyle = {
     bgcolor: 'background.paper',
     boxShadow: 24,
     p: 4,
+};
+
+const styles = {
+    logo: {
+        width: '100%',
+        display: 'flex',
+        alignItems: 'center',
+    },
 };
 
 export function AppHeader({ mobileOpen, setMobileOpen }) {
@@ -67,19 +80,20 @@ export function AppHeader({ mobileOpen, setMobileOpen }) {
         setMobileOpen(!mobileOpen);
     };
 
+
     const modal = (
         <Modal open={modalIsOpen} onClose={handleCloseModal}>
             <Box sx={modalStyle}>
-                <Typography 
-                    variant="h6" 
-                    component="h2" 
+                <Typography
+                    variant="h6"
+                    component="h2"
                     sx={{
                         mb: 2
                     }}>
-                        Account Details
+                    Account Details
                 </Typography>
-                <TextField 
-                    id="username" 
+                <TextField
+                    id="username"
                     variant="outlined"
                     label="Username"
                     value={user ? user.username : ""}
@@ -89,8 +103,8 @@ export function AppHeader({ mobileOpen, setMobileOpen }) {
                         width: "100%"
                     }}
                 />
-                <TextField 
-                    id="email" 
+                <TextField
+                    id="email"
                     variant="outlined"
                     label="Email"
                     value={user ? user.email : ""}
@@ -107,9 +121,9 @@ export function AppHeader({ mobileOpen, setMobileOpen }) {
     const authLinks = (
         <Box sx={{ display: "flex", alignItems: "center" }}>
             <IconButton sx={{ ml: 1 }} onClick={themeMode.toggleThemeMode}>
-                {theme.palette.mode === "dark" ? 
-                <Brightness7 /> : 
-                <Brightness4 />}
+                {theme.palette.mode === "dark" ?
+                    <Brightness6Outlined /> :
+                    <Brightness2Outlined color="white" />}
             </IconButton>
             <IconButton
                 aria-label="account of current user"
@@ -143,7 +157,7 @@ export function AppHeader({ mobileOpen, setMobileOpen }) {
                         justifyContent: "center",
                         alignItems: "center"
                     }}>
-                    {logoutPending === true ? <CircularProgress size={15} sx={{mr: 2}} /> : null}
+                        {logoutPending === true ? <CircularProgress size={15} sx={{ mr: 2 }} /> : null}
                     </Box>
                     Logout
                 </MenuItem>
@@ -172,9 +186,9 @@ export function AppHeader({ mobileOpen, setMobileOpen }) {
                 >
                     <MenuIcon />
                 </IconButton>
-                <Typography variant="h6" noWrap sx={{ flexGrow: 1 }}>
-                    Tasks Manager
-                </Typography>
+                <Box sx={styles.logo}>
+                    <Logo className="Logo-sm" fill={theme.palette.white.main} />
+                </Box>
                 {authLinks}
             </Toolbar>
             {modal}

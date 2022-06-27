@@ -81,7 +81,7 @@ export function CardContentDistributionChart({
                             </CardContent>
                         </Grid>
 
-                        <Grid item xs={12} sm={6} md={6}>
+                        <Grid item xs={12} sm={6} md={6} sx={{ p:2 }}>
                             <TableContainer component={Paper}>
                                 <Table>
                                     <TableHead>

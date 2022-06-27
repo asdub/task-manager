@@ -202,6 +202,7 @@ export default function TaskDetails() {
                                 <Grid item>
                                     <Box sx={{ display: "flex", margin: (theme) => theme.spacing(1), marginTop: (theme) => theme.spacing(3) }}>
                                         <Button
+                                            color="secondary"
                                             component={Link}
                                             to='/tasks'
                                             size="medium"
@@ -213,7 +214,7 @@ export default function TaskDetails() {
                                         <Button type="submit"
                                             size="medium"
                                             variant="contained"
-                                            color="primary"
+                                            color="secondary"
                                         >
                                             {id ? "Save" : "Create"}
                                         </Button>
