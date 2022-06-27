@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import {
-  Box, Button, Dialog, DialogActions, DialogTitle,
-  Typography, Pagination
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogTitle,
+  Typography, 
+  Pagination
 } from "@mui/material";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import queryString from "query-string";
@@ -106,7 +111,7 @@ export default function Tasks() {
         <Button
           component={Link}
           variant="contained"
-          color="primary"
+          color="secondary"
           to="/tasks/create"
         >
           Create Task
@@ -135,7 +140,7 @@ export default function Tasks() {
         justifyContent: "flex-end"
       }}>
         <Pagination
-          color="primary"
+          color="secondary"
           page={query.page ? parseInt(query.page) : 1}
           onChange={handlePagePagination}
           count={Math.ceil(resourceList.count / pageSize) || 0}

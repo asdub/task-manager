@@ -1,3 +1,4 @@
+/* Global CSS */
 .task-masonry-grid {
     display: -webkit-box; 
     display: -ms-flexbox;
@@ -11,4 +12,16 @@
 }
 .task-masonry-grid_column > div {
   margin-bottom: 16px;
+}
+.MuiGrid-item {
+  align-self: center;
+}
+.Logo-sm {
+  height: 100%;
+  width: 120px;
+}
+
+.Logo-md {
+  height: 100%;
+  width: 160px;
 }

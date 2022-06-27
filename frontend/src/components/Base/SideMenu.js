@@ -1,20 +1,23 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import PropTypes from "prop-types";
-import Drawer from "@mui/material/Drawer";
-import Toolbar from "@mui/material/Toolbar";
-
-import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
-import ListItem from "@mui/material/ListItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
+import { 
+    Box,
+    GlobalStyles,
+    Drawer,
+    Toolbar,
+    List,
+    Divider,
+    ListItem,
+    ListItemIcon,
+    ListItemText,
+    useTheme
+ } from "@mui/material";
 import CategoryIcon from "@mui/icons-material/Category";
-import DashboardIcon from "@mui/icons-material/Dashboard"
-import ListAltIcon from "@mui/icons-material/ListAlt"
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import ListAltIcon from "@mui/icons-material/ListAlt";
+import Footer from "./Footer"
 
-import { Box } from "@mui/system";
-import { GlobalStyles, useTheme } from "@mui/material";
 
 const drawerWidth = 240;
 
@@ -50,13 +53,13 @@ const SidebarGlobalStyles = () => {
                 },
                 ".sidebar-nav-item-active": {
                     textDecoration: "none",
-                    color: theme.palette.primary.main,
+                    color: theme.palette.secondary.main,
                     "& .MuiSvgIcon-root": {
-                        color: theme.palette.primary.main,
+                        color: theme.palette.secondary.main,
                     },
                     "& .MuiTypography-root": {
                         fontWeight: 500,
-                        color: theme.palette.primary.main,
+                        color: theme.palette.secondary.main,
                     },
                 },
             }}
@@ -96,6 +99,7 @@ export function SideMenu(props) {
                     );
                 })}
             </List>
+            <Footer />
         </Box>
     );
 

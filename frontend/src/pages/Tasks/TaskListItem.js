@@ -1,16 +1,26 @@
 import React, { useState } from 'react';
 import PropTypes from "prop-types";
-import { ListItemIcon, styled, Checkbox, Card, CardHeader, 
-    CardContent, IconButton, Box, Menu, MenuItem } from "@mui/material";
+import { 
+    ListItemIcon,
+    styled,
+    Checkbox,
+    Card,
+    CardHeader, 
+    CardContent,
+    IconButton,
+    Box,
+    Menu,
+    MenuItem 
+} from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline"
 import { Link } from "react-router-dom";
 import priorityOptionsData from 'src/data/priorityOptionsData';
 
 const StyledLink = styled(Link)(({ theme }) => ({
-    textDecoration: "none",
-    color: "unset",
-    ":hover": {
+    textDecoration: 'none',
+    color: 'unset',
+    ':hover': {
         color: theme.palette.primary.main
     }
 }));

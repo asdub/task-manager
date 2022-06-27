@@ -4,19 +4,19 @@ import { lightGreen, cyan, amber, red } from "@mui/material/colors";
 const priorityOptionsData = {
     1: {
         label: "Low",
-        color: lightGreen[500],
+        color: lightGreen[400],
     },
     2: {
         label: "Medium",
-        color: cyan[500],
+        color: cyan[300],
     },
     3: {
         label: "High",
-        color: amber[500],
+        color: amber[300],
     },
     4: {
         label: "Urgent",
-        color: red[500],
+        color: red[300],
     },
 };
 export const priorityOptionsDataList = Object

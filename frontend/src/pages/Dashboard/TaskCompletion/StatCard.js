@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { blueGrey } from "@mui/material/colors";
+import { grey } from "@mui/material/colors";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import { Avatar, Typography } from "@mui/material";
@@ -12,7 +12,7 @@ export default function StatCard({ loading, title, value, icon }) {
         <Grid item xs={12} sm={12} md={4} lg={4}>
             <Paper
                 sx={{
-                    padding: (theme) => theme.spacing(1),
+                    p: (theme) => theme.spacing(1),
                     display: "flex",
                     alignItems: "center",
                 }}
@@ -21,9 +21,9 @@ export default function StatCard({ loading, title, value, icon }) {
                 <Box>
                     <Avatar
                         sx={{
-                            margin: (theme) => theme.spacing(1),
-                            backgroundColor: blueGrey[500],
-                            color: "#fff",
+                            m: (theme) => theme.spacing(1),
+                            backgroundColor: (theme) => theme.palette.secondary.main,
+                            color: grey[100],
                             width: 32,
                             height: 32,
                         }}
@@ -34,13 +34,13 @@ export default function StatCard({ loading, title, value, icon }) {
                 <Box sx={{ display: "flex", flexDirection: "column" }}>
                     <Typography
                         variant="caption"
-                        sx={{ marginLeft: (theme) => theme.spacing(1) }}
+                        sx={{ ml: (theme) => theme.spacing(1) }}
                     >
                         {title}
                     </Typography>
                     <Typography
                         variant="h6"
-                        sx={{ marginLeft: (theme) => theme.spacing(1) }}
+                        sx={{ ml: (theme) => theme.spacing(1) }}
                     >
                         {`${loading ? "Loading..." : value}`}
                     </Typography>

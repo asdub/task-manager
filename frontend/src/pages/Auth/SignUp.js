@@ -1,17 +1,22 @@
 import * as React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import Avatar from '@mui/material/Avatar';
+import { Link as RouterLink } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
+import {
+    Avatar, 
+    Box,
+    Container,
+    Grid, 
+    Link,
+    TextField,
+    Typography,
+} from '@mui/material';
 import { LoadingButton } from '@mui/lab';
-import TextField from '@mui/material/TextField';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
 import { Formik } from "formik";
 import * as yup from "yup";
 
 import useRequestAuth from 'src/hooks/useRequestAuth';
+import Footer from "src/components/Base/Footer";
 
 const validationSchema = yup.object({
     username: yup.string().required("Username required"),
@@ -29,6 +34,8 @@ export default function SignUp() {
         })
     };
 
+   
+
     return (
         <Container component="main" maxWidth="xs">
             <Box
@@ -39,6 +46,7 @@ export default function SignUp() {
                     alignItems: 'center',
                 }}
             >
+                { console.log(styles)}
                 <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
                     <LockOutlinedIcon />
                 </Avatar>

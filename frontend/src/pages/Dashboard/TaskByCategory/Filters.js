@@ -81,7 +81,7 @@ export default function Filters({ setQueries }) {
                                         type="submit"
                                         size="medium"
                                         variant="contained"
-                                        color="primary"
+                                        color="secondary"
                                     >
                                         Filter
                                     </Button>
