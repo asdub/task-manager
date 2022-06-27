@@ -6,6 +6,7 @@ import {
     Box,
     Checkbox,
     Container,
+    Fade,
     FormControlLabel,
     Grid,
     TextField,
@@ -19,7 +20,7 @@ import * as yup from "yup";
 
 import useRequestAuth from "src/hooks/useRequestAuth";
 import { ReactComponent as Logo } from "src/assets/svg/task_logo.svg";
-import SignUpIllustration from "src/components/Base/Illustrations/SignUpIllustration";
+import SignInIllustration from "src/components/Base/Illustrations/SignInIllustration";
 import Footer from "src/components/Base/Footer";
 
 const validationSchema = yup.object({
@@ -93,7 +94,7 @@ export default function SignIn() {
         boxSignUpBtm: {
             width: '100%',
             alignItems: 'center',
-            pt: 3,
+            pt: 4,
             display: {
                 xs: 'flex',
                 md: 'none',
@@ -143,8 +144,6 @@ export default function SignIn() {
             maxWidth={false}
             sx={{
                 height: '100vh',
-                // backgroundColor: theme.palette.secondary.main,
-                // backgroundImage: `radial-gradient(${theme.palette.secondary.main} 0.5px, ${theme.palette.background.default} 0.5px)`,
             }}
         >
             <Grid container sx={styles.gridContainer}>
@@ -153,16 +152,14 @@ export default function SignIn() {
                         <Logo className="Logo-md" fill={theme.palette.primary.main} />
                     </Box>
                     <Box sx={styles.undrawBanner}>
-                    <SignUpIllustration 
-                        fillPrimary={theme.palette.primary.main}
-                        fillSecondary={theme.palette.text.secondary} 
-                    />
-                        {/* <Box
-                            component="img"
-                            sx={styles.img}
-                            src={undraw_vs6q}
-                            alt="Sign Up"
-                        /> */}
+                        <Fade in={true} timeout={500}>
+                            <div>
+                                <SignInIllustration 
+                                    fillPrimary={theme.palette.primary.main}
+                                    fillSecondary={theme.palette.text.secondary} 
+                                />
+                            </div>
+                        </Fade>
                     </Box>
                 </Grid>
                 <Grid item xs={12} md={7} sx={styles.gridItem1}>
@@ -184,99 +181,101 @@ export default function SignIn() {
                             </Link>
                         </Box>
                     </Box>
-                    <Box sx={styles.gridItem0Inner}>
-                        <Box sx={styles.boxCenter}>
+                    <Fade in={true} timeout={400}>
+                        <Box sx={styles.gridItem0Inner}>
                             <Box sx={styles.boxCenter}>
-                                <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
-                                    <LockOutlinedIcon />
-                                </Avatar>
-                                <Typography component="h2" variant="h4">
-                                    Sign in
-                                </Typography>
+                                <Box sx={styles.boxCenter}>
+                                    <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
+                                        <LockOutlinedIcon />
+                                    </Avatar>
+                                    <Typography component="h2" variant="h4">
+                                        Sign In
+                                    </Typography>
+                                </Box>
                             </Box>
-                        </Box>
-                        <Formik
-                            validationSchema={validationSchema}
-                            validateOnBlur={false}
-                            onSubmit={handleSubmit}
-                            initialValues={{
-                                username: "",
-                                password: ""
-                            }}
-                        >
-                            {(formik) => {
-                                return (
-                                    <Box component="form" onSubmit={formik.handleSubmit} noValidate sx={{ mt: 1 }}>
-                                        <TextField
-                                            color="primary"
-                                            margin="normal"
-                                            required
-                                            fullWidth
-                                            id="username"
-                                            label="Username/ Email Address"
-                                            name="username"
-                                            autoFocus
-                                            {...formik.getFieldProps("username")}
-                                            error={formik.touched.username && Boolean(formik.errors.username)}
-                                            helperText={formik.touched.username && formik.errors.username}
-                                        />
-                                        <TextField
-                                            color="primary"
-                                            margin="normal"
-                                            required
-                                            fullWidth
-                                            name="password"
-                                            label="Password"
-                                            type="password"
-                                            id="password"
-                                            {...formik.getFieldProps("password")}
-                                            error={formik.touched.password && Boolean(formik.errors.password)}
-                                            helperText={formik.touched.password && formik.errors.password}
-
-                                        />
-                                        <FormControlLabel
-                                            control={<Checkbox value="remember" color="primary" />}
-                                            label="Remember me"
-                                        />
-                                        <LoadingButton
-                                            color="primary"
-                                            type="submit"
-                                            fullWidth
-                                            variant="contained"
-                                            loading={loading}
-                                            sx={{ mt: 3, mb: 2 }}
-                                        >
-                                            Sign In
-                                        </LoadingButton>
-                                        <Box>
-                                            <Link
-                                                color="text.secondary"
-                                                component={RouterLink}
-                                                to="/password-reset"
-                                                key="reset-password">
-                                                Forgot password?
-                                            </Link>
-                                        </Box>
-                                        <Box sx={styles.boxSignUpBtm}>
-                                            <Typography component="h3" variant="h6">
-                                                Not Registered?
-                                            </Typography>
-                                            <Link
-                                                component={RouterLink}
+                            <Formik
+                                validationSchema={validationSchema}
+                                validateOnBlur={false}
+                                onSubmit={handleSubmit}
+                                initialValues={{
+                                    username: "",
+                                    password: ""
+                                }}
+                            >
+                                {(formik) => {
+                                    return (
+                                        <Box component="form" onSubmit={formik.handleSubmit} noValidate sx={{ mt: 1 }}>
+                                            <TextField
                                                 color="primary"
-                                                to="/signup"
-                                                key="signup-sm"
-                                                style={{ paddingLeft: '5px' }}
-                                                styles={styles}
+                                                margin="normal"
+                                                required
+                                                fullWidth
+                                                id="username"
+                                                label="Username/ Email Address"
+                                                name="username"
+                                                autoFocus
+                                                {...formik.getFieldProps("username")}
+                                                error={formik.touched.username && Boolean(formik.errors.username)}
+                                                helperText={formik.touched.username && formik.errors.username}
+                                            />
+                                            <TextField
+                                                color="primary"
+                                                margin="normal"
+                                                required
+                                                fullWidth
+                                                name="password"
+                                                label="Password"
+                                                type="password"
+                                                id="password"
+                                                {...formik.getFieldProps("password")}
+                                                error={formik.touched.password && Boolean(formik.errors.password)}
+                                                helperText={formik.touched.password && formik.errors.password}
+
+                                            />
+                                            <FormControlLabel
+                                                control={<Checkbox value="remember" color="primary" />}
+                                                label="Remember me"
+                                            />
+                                            <LoadingButton
+                                                color="primary"
+                                                type="submit"
+                                                fullWidth
+                                                variant="contained"
+                                                loading={loading}
+                                                sx={{ mt: 3, mb: 2 }}
                                             >
-                                                {" Sign Up today!"}
-                                            </Link>
+                                                Sign In
+                                            </LoadingButton>
+                                            <Box>
+                                                <Link
+                                                    color="text.secondary"
+                                                    component={RouterLink}
+                                                    to="/password-reset"
+                                                    key="reset-password">
+                                                    Forgot password?
+                                                </Link>
+                                            </Box>
+                                            <Box sx={styles.boxSignUpBtm}>
+                                                <Typography component="h3" variant="subtitle1">
+                                                    Not Registered?
+                                                </Typography>
+                                                <Link
+                                                    component={RouterLink}
+                                                    color="primary"
+                                                    to="/signup"
+                                                    key="signup-sm"
+                                                    style={{ paddingLeft: '5px' }}
+                                                    styles={styles}
+                                                >
+                                                    {" Sign Up today!"}
+                                                </Link>
+                                            </Box>
                                         </Box>
-                                    </Box>
-                                )
-                            }}
-                        </Formik>
-                    </Box>
+                                    )
+                                }}
+                            </Formik>
+                        </Box>
+                    </Fade>
                     <Footer />
                 </Grid>
             </Grid>
