@@ -7,7 +7,7 @@
 
 **A live version of this project can be found [here](https://taskmanager-asdub.herokuapp.com/)**
 
-<img src="https://github.com/asdub/improved-telegram/blob/main/readme/screenshots/mobile_device.png" width="150" alt="Task Manager on Mobile Device" />
+<img src="https://github.com/asdub/task-manager/blob/main/readme/screenshots/mobile_device.png" width="150" alt="Task Manager on Mobile Device" />
 
 
 ### Project Description
