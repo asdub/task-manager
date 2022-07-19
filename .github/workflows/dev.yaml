@@ -3,6 +3,8 @@ name: Dev Workflow - Test
 on:
   pull_request:
     branches: [develop]
+    paths-ignore:
+    - '**.md'
   push:
     branches: [develop]
     paths-ignore:
